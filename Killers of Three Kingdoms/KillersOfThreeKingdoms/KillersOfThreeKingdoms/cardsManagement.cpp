@@ -50,10 +50,10 @@ CARDSINFO * cardsManagement::at(uint32_t index) {
 			cardsInfo->hurt = temp_value["hurt"].asUInt();
 			cardsInfo->recover = temp_value["recover"].asUInt();
 			cardsInfo->range = temp_value["range"].asUInt();
-			cardsInfo->distance = temp_value["distance"].asUInt();
+			cardsInfo->distance = temp_value["distance"].asInt();
 			cardsInfo->type = temp_value["type"].asUInt();
-			cardsInfo->name = temp_value["name"].asCString();
-			cardsInfo->desc = temp_value["desc"].asCString();
+			cardsInfo->name = UTF8_To_string(temp_value["name"].asString().c_str());
+			cardsInfo->desc = UTF8_To_string(temp_value["desc"].asString().c_str());
 			return cardsInfo;
 		}
 	}
