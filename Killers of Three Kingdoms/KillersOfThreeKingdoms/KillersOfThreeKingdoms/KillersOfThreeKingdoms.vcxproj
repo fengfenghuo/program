@@ -157,6 +157,7 @@
     <ClCompile Include="jsoncpp-src-0.5.0\src\lib_json\json_value.cpp" />
     <ClCompile Include="jsoncpp-src-0.5.0\src\lib_json\json_writer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rolesManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cards.h" />
@@ -170,6 +171,8 @@
     <ClInclude Include="jsoncpp-src-0.5.0\include\json\reader.h" />
     <ClInclude Include="jsoncpp-src-0.5.0\include\json\value.h" />
     <ClInclude Include="jsoncpp-src-0.5.0\include\json\writer.h" />
+    <ClInclude Include="roles.h" />
+    <ClInclude Include="rolesManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\cards.json" />

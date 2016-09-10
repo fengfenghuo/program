@@ -20,3 +20,17 @@ typedef struct cards_info {
 	uint8_t type;
 	string desc;
 }CARDSINFO;
+
+typedef struct cli_cards {
+	uint32_t id;
+	uint8_t category;
+	uint8_t color;
+	uint8_t points;
+	string name;
+	uint8_t hurt;
+	uint8_t recover;
+	uint8_t range;
+	int distance;
+	uint8_t type;
+	string desc;
+}CLICARDS;
