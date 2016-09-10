@@ -467,8 +467,8 @@
         "desc": "距离+1"
     },
     {
-        "id": 604,
-        "category": 6,
+        "id": 701,
+        "category": 7,
         "spade": "0",
         "plum": "0",
         "heart": "5",
@@ -482,8 +482,8 @@
         "desc": "距离-1"
     },
     {
-        "id": 605,
-        "category": 6,
+        "id": 702,
+        "category": 7,
         "spade": "0",
         "plum": "0",
         "heart": "0",
@@ -497,8 +497,8 @@
         "desc": "距离-1"
     },
     {
-        "id": 606,
-        "category": 6,
+        "id": 703,
+        "category": 7,
         "spade": "K",
         "plum": "0",
         "heart": "0",

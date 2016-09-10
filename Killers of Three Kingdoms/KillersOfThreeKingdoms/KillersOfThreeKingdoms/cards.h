@@ -13,9 +13,9 @@ typedef struct cards_info {
 	uint8_t diamond_num;
 	uint8_t diamond[CARDS_NUM];
 	string name;
-	uint8_t hurt;
-	uint8_t recover;
-	uint8_t range;
+	uint16_t hurt;
+	uint16_t recover;
+	uint16_t range;
 	int distance;
 	uint8_t type;
 	string desc;
@@ -24,13 +24,12 @@ typedef struct cards_info {
 typedef struct cli_cards {
 	uint32_t id;
 	uint8_t category;
-	uint8_t color;
-	uint8_t points;
+	uint16_t color;
+	string points;
 	string name;
-	uint8_t hurt;
-	uint8_t recover;
-	uint8_t range;
+	uint16_t hurt;
+	uint16_t recover;
+	uint16_t range;
 	int distance;
 	uint8_t type;
-	string desc;
 }CLICARDS;
