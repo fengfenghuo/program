@@ -4,6 +4,7 @@
 
 typedef struct roles_info{
 	uint32_t id;
+	uint16_t identity;
 	uint16_t blood;
 	string name;
 	string power;

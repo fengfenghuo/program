@@ -8,6 +8,7 @@ public:
 	uint32_t count();
 	ROLESINFO * at(uint32_t index);
 	ROLESINFO * findRoleById(uint32_t id);
+	ROLESINFO * findRoleByIdentity(uint16_t identity);
 	~rolesInfoManagement();
 }ROLESINFOMANAGEMENT;
 

@@ -5,11 +5,16 @@
 #include <cstdlib>
 
 GameData::GameData() {
-
+	m_roleCount = 0;
 }
 
 GameData::~GameData() {
 
+}
+
+bool GameData::setRoleCount(uint16_t role_count) {
+	m_roleCount = role_count;
+	return true;
 }
 
 bool GameData::generateStatus(uint16_t role_count, uint16_t *roles_status) {
@@ -59,6 +64,12 @@ bool GameData::generateStatus(uint16_t role_count, uint16_t *roles_status) {
 	return true;
 }
 
-bool GameData::generateRoles(uint16_t role_status, uint32_t *roles) {
+bool GameData::generateRoles(uint16_t role_status, uint16_t *roles_identity) {
+	ROLESINFOMANAGEMENT role_man;
+
+	uint16_t role_count = role_man.count();
+	for (uint16_t i = 0; i < m_roleCount * ROLES_CHOOSE_NUM; i++) {
+		roles_identity[i] = rand() % role_count;
+	}
 	return true;
 }

@@ -2,6 +2,7 @@
 [
     {
         "id": 1001,
+        "identity": 1,
         "name": "刘备",
         "blood": 4,
         "power": "蜀",
@@ -10,6 +11,7 @@
     },
     {
         "id": 1002,
+        "identity": 2,
         "name": "张飞",
         "blood": 4,
         "power": "蜀",
@@ -17,6 +19,7 @@
     },
     {
         "id": 1003,
+        "identity": 3,
         "name": "关羽",
         "blood": 4,
         "power": "蜀",
@@ -24,6 +27,7 @@
     },
     {
         "id": 1004,
+        "identity": 4,
         "name": "诸葛亮",
         "blood": 3,
         "power": "蜀",
@@ -32,6 +36,7 @@
     },
     {
         "id": 1005,
+        "identity": 5,
         "name": "赵云",
         "blood": 4,
         "power": "蜀",
@@ -39,6 +44,7 @@
     },
     {
         "id": 1006,
+        "identity": 6,
         "name": "马超",
         "blood": 4,
         "power": "蜀",
@@ -47,6 +53,7 @@
     },
     {
         "id": 1007,
+        "identity": 7,
         "name": "黄月英",
         "blood": 3,
         "power": "蜀",
@@ -55,6 +62,7 @@
     },
     {
         "id": 2001,
+        "identity": 8,
         "name": "孙权",
         "blood": 4,
         "power": "吴",
@@ -63,6 +71,7 @@
     },
     {
         "id": 2002,
+        "identity": 9,
         "name": "甘宁",
         "blood": 4,
         "power": "吴",
@@ -70,6 +79,7 @@
     },
     {
         "id": 2003,
+        "identity": 10,
         "name": "吕蒙",
         "blood": 4,
         "power": "吴",
@@ -77,6 +87,7 @@
     },
     {
         "id": 2004,
+        "identity": 11,
         "name": "黄盖",
         "blood": 4,
         "power": "吴",
@@ -84,6 +95,7 @@
     },
     {
         "id": 2005,
+        "identity": 12,
         "name": "周瑜",
         "blood": 3,
         "power": "吴",
@@ -92,6 +104,7 @@
     },
     {
         "id": 2006,
+        "identity": 13,
         "name": "大乔",
         "blood": 3,
         "power": "吴",
@@ -100,6 +113,7 @@
     },
     {
         "id": 2007,
+        "identity": 14,
         "name": "陆逊",
         "blood": 3,
         "power": "吴",
@@ -108,6 +122,7 @@
     },
     {
         "id": 2008,
+        "identity": 15,
         "name": "孙尚香",
         "blood": 3,
         "power": "吴",
@@ -116,6 +131,7 @@
     },
     {
         "id": 3001,
+        "identity": 16,
         "name": "曹操",
         "blood": 4,
         "power": "魏",
@@ -124,6 +140,7 @@
     },
     {
         "id": 3002,
+        "identity": 17,
         "name": "司马懿",
         "blood": 3,
         "power": "魏",
@@ -132,6 +149,7 @@
     },
     {
         "id": 3003,
+        "identity": 18,
         "name": "夏侯惇",
         "blood": 4,
         "power": "魏",
@@ -139,6 +157,7 @@
     },
     {
         "id": 3004,
+        "identity": 19,
         "name": "张辽",
         "blood": 4,
         "power": "魏",
@@ -146,6 +165,7 @@
     },
     {
         "id": 3005,
+        "identity": 20,
         "name": "许褚",
         "blood": 4,
         "power": "魏",
@@ -153,6 +173,7 @@
     },
     {
         "id": 3006,
+        "identity": 21,
         "name": "郭嘉",
         "blood": 3,
         "power": "魏",
@@ -161,6 +182,7 @@
     },
     {
         "id": 3007,
+        "identity": 22,
         "name": "甄姬",
         "blood": 3,
         "power": "魏",
@@ -169,6 +191,7 @@
     },
     {
         "id": 4001,
+        "identity": 23,
         "name": "华佗",
         "blood": 3,
         "power": "群雄",
@@ -177,6 +200,7 @@
     },
     {
         "id": 4002,
+        "identity": 24,
         "name": "吕布",
         "blood": 4,
         "power": "群雄",
@@ -184,6 +208,7 @@
     },
     {
         "id": 4003,
+        "identity": 25,
         "name": "貂蝉",
         "blood": 3,
         "power": "群雄",
@@ -192,6 +217,7 @@
     },
     {
         "id": 4004,
+        "identity": 26,
         "name": "袁术",
         "blood": 4,
         "power": "群雄",
@@ -200,6 +226,7 @@
     },
     {
         "id": 4005,
+        "identity": 27,
         "name": "华雄",
         "blood": 6,
         "power": "群雄",

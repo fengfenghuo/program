@@ -12,6 +12,7 @@ public:
 	void viewJudgementCards(bool isShow);
 	void viewRoleCard();
 	void viewRolesCard(uint32_t *roles, uint16_t role_num = ROLES_CHOOSE_NUM);
+	void viewRolesCard(uint16_t *roles_identity, uint16_t role_num = ROLES_CHOOSE_NUM);
 
 	bool chooseRoleCard(uint32_t *roles, uint16_t index);
 	bool chooseRoleCard(uint32_t *roles, string name);
@@ -43,5 +44,5 @@ public:
 	bool playerBloodReduce(uint16_t n = 1);
 
 private:
-	PLAYERINFO player_info;
+	PLAYERINFO m_playerInfo;
 };
