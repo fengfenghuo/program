@@ -28,11 +28,13 @@ public:
 
 	bool isCardCanPlay(uint32_t id);
 	bool isCardCanEquip(uint32_t id);
-
-	uint16_t calcuteDistance(uint16_t role_number = 0);
+	bool isCardCanEquip(uint16_t index);
 
 	bool useRoleSkill(uint16_t index);
 	bool useRoleSkill(uint32_t id);
+
+	bool playerBloodAdd(uint16_t n = 1);
+	bool playerBloodReduce(uint16_t n = 1);
 
 private:
 	PLAYERINFO player_info;

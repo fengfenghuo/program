@@ -33,3 +33,4 @@ typedef struct cli_cards {
 	int distance;
 	uint8_t type;
 }CLICARDS;
+

@@ -2,6 +2,7 @@
 #include "rolesInfoManagement.h"
 #include "cardsInfoManagement.h"
 #include <string>
+#include <cmath>
 
 PlayerData::PlayerData() {
 	player_info.role_id = 0; 
@@ -132,6 +133,22 @@ bool PlayerData::isCardCanEquip(uint32_t id) {
 	return false;
 }
 
+bool PlayerData::isCardCanEquip(uint16_t index) {
+	if (player_info.cur_cards[index].category == CARDS_EQUIPMENT_WEAPON 
+		|| player_info.cur_cards[index].category == CARDS_EQUIPMENT_ARMOR 
+		|| player_info.cur_cards[index].category == CARDS_EQUIPMENT_HORSE_MINUS 
+		|| player_info.cur_cards[index].category == CARDS_EQUIPMENT_HORSE_PLUS) {
+		for (uint16_t i = 0; i < player_info.equip_num; i++) {
+			if (player_info.cur_cards[index].category == player_info.equip_cards[i].category) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	return false;
+}
+
 uint32_t PlayerData::playCards(uint16_t index) {
 	if(player_info.cards_num == 0){
 		cout << "无手牌可使用" << endl;
@@ -162,7 +179,7 @@ uint32_t PlayerData::playCards(uint16_t index) {
 uint32_t PlayerData::playCards(string name) {
 	if (player_info.cards_num == 0) {
 		cout << "无手牌可使用" << endl;
-		return NULL;
+		return 0;
 	}
 
 	int index = -1;
@@ -176,7 +193,7 @@ uint32_t PlayerData::playCards(string name) {
 
 	if (index < 0) {
 		cout << "无此手牌可使用" << endl;
-		return NULL;
+		return 0;
 	}
 	
 	return playCards((uint16_t)index);
@@ -198,16 +215,61 @@ uint32_t PlayerData::discardCards(uint32_t id) {
 	return id;
 }
 
-uint32_t PlayerData::equipCards(uint32_t id){
-	if (!isCardCanEquip(id)) {
+uint32_t PlayerData::equipCards(uint16_t index) {
+	if (!isCardCanEquip(index)) {
 		cout << "此卡牌不能装备！" << endl;
-		return id;
+		return player_info.cur_cards[index].id;
 	}
+
+	memcpy(&player_info.equip_cards[player_info.equip_num++], &player_info.cur_cards[index], sizeof(player_info.cur_cards[index]));
+	playCards(index);
+
+	return player_info.equip_cards[player_info.equip_num-1].id;
+}
+
+uint32_t PlayerData::equipCards(string name) {
+	if (player_info.cards_num == 0) {
+		cout << "无手牌可装备" << endl;
+		return 0;
+	}
+
+	int index = -1;
+
+	for (uint16_t i = 0; i < player_info.cards_num; i++) {
+		if (name == player_info.cur_cards[i].name) {
+			index = i;
+			break;
+		}
+	}
+
+	if (index < 0) {
+		cout << "无此手牌可装备" << endl;
+		return 0;
+	}
+
+	return equipCards((uint16_t)index);
+}
+
+uint32_t PlayerData::equipCards(uint32_t id){
 	return id;
 }
 
-uint16_t PlayerData::calcuteDistance(uint16_t role_number) {
-	return 0;
+bool PlayerData::playerBloodAdd(uint16_t n) {
+	if (player_info.cur_blood >= player_info.max_blood){
+		return false;
+	}
+	player_info.cur_blood = player_info.cur_blood + n > player_info.max_blood ? player_info.max_blood : player_info.cur_blood + n;
+
+	return true;
+}
+
+bool PlayerData::playerBloodReduce(uint16_t n){
+	if (player_info.cur_blood <= 0) {
+		return false;
+	}
+
+	player_info.cur_blood--;
+	return true;
 }
 
 bool PlayerData::useRoleSkill(uint16_t index) {

@@ -44,10 +44,10 @@ CARDSINFO * cardsInfoManagement::at(uint32_t index) {
 			Json::Value temp_value = cards_value[i];
 			cardsInfo->category = temp_value["category"].asUInt();
 			cardsInfo->id = temp_value["id"].asUInt();
-			//cardsInfo->spade_num = strToArray(temp_value["spade"].asCString(), cardsInfo->spade);
-			//cardsInfo->plum_num = strToArray(temp_value["plum"].asCString(), cardsInfo->plum);
-			//cardsInfo->heart_num = strToArray(temp_value["heart"].asCString(), cardsInfo->heart);
-			//cardsInfo->diamond_num = strToArray(temp_value["diamond"].asCString(), cardsInfo->diamond);
+			cardsInfo->spade_num = strToArray(temp_value["spade"].asCString(), cardsInfo->spade);
+			cardsInfo->plum_num = strToArray(temp_value["plum"].asCString(), cardsInfo->plum);
+			cardsInfo->heart_num = strToArray(temp_value["heart"].asCString(), cardsInfo->heart);
+			cardsInfo->diamond_num = strToArray(temp_value["diamond"].asCString(), cardsInfo->diamond);
 			cardsInfo->hurt = temp_value["hurt"].asUInt();
 			cardsInfo->recover = temp_value["recover"].asUInt();
 			cardsInfo->range = temp_value["range"].asUInt();
