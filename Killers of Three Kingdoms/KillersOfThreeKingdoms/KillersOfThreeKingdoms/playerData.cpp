@@ -1,6 +1,7 @@
 #include "playerData.h"
 #include "rolesInfoManagement.h"
 #include "cardsInfoManagement.h"
+#include <cstdlib>
 #include <string>
 #include <cmath>
 
@@ -27,6 +28,7 @@ PlayerData::~PlayerData() {
 
 string PlayerData::viewCardColor(CLICARDS card) {
 	string card_color;
+	char buff[8];
 	switch (card.color)
 	{
 	case 0:
@@ -45,7 +47,7 @@ string PlayerData::viewCardColor(CLICARDS card) {
 		card_color = "»¨É«ÓÐÎó";
 		return card_color;
 	}
-	card_color += card.points;
+	card_color += _itoa_s((int)card.points, buff, 10);
 	return card_color;
 }
 

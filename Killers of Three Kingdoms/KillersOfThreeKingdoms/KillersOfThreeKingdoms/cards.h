@@ -4,14 +4,14 @@
 typedef struct cards_info {
 	uint32_t id;
 	uint8_t category;
-	uint8_t spade_num;
-	uint8_t spade[CARDS_NUM];
-	uint8_t plum_num;
-	uint8_t plum[CARDS_NUM];
-	uint8_t heart_num;
-	uint8_t heart[CARDS_NUM];
-	uint8_t diamond_num;
-	uint8_t diamond[CARDS_NUM];
+	uint16_t spade_num;
+	uint16_t spade[CARDS_NUM];
+	uint16_t plum_num;
+	uint16_t plum[CARDS_NUM];
+	uint16_t heart_num;
+	uint16_t heart[CARDS_NUM];
+	uint16_t diamond_num;
+	uint16_t diamond[CARDS_NUM];
 	string name;
 	uint16_t hurt;
 	uint16_t recover;
@@ -25,7 +25,7 @@ typedef struct cli_cards {
 	uint32_t id;
 	uint8_t category;
 	uint16_t color;
-	string points;
+	uint16_t points;
 	string name;
 	uint16_t hurt;
 	uint16_t recover;

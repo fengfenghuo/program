@@ -11,7 +11,9 @@ public:
 	bool setRoleCount(uint16_t role_count);
 	bool generateStatus(uint16_t role_count, uint16_t *roles);
 	bool generateRoles(uint16_t role_status, uint16_t *roles_identity);
+	bool shuffleCards();
 
+	void viewPilesCards();
 
 private:
 	uint16_t m_roleCount;

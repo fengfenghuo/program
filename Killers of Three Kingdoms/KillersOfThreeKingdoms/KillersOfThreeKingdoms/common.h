@@ -10,6 +10,11 @@ using namespace std;
 
 #define CARDS_TOTAL 104
 
+#define CARDS_COLOR_SPADE 1
+#define CARDS_COLOR_PLUM 2
+#define CARDS_COLOR_HEART 3
+#define CARDS_COLOR_DIAMOND 4
+
 #define CARDS_CATEGORY_BASIC 1
 #define CARDS_CATEGORY_STRATEGY 2
 #define CARDS_CATEGORY_STRATEGY_DELAY 3
@@ -26,6 +31,6 @@ using namespace std;
 #define STATUS_GUILTY 3  //ÄÚ¼é
 #define STATUS_REBEL 4  //·´Ôô
 
-uint8_t strToArray(const char *source, uint8_t *array);
+uint16_t strToArray(const char *source, uint16_t *array);
 
 std::string UTF8_To_string(const std::string & str);

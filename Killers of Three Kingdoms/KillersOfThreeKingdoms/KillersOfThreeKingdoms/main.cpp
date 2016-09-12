@@ -2,18 +2,20 @@
 #include "gameData.h"
 
 int main() {
-	uint16_t num = 0;
+	/*uint16_t num = 0;
 	cout << "请选择需要的人数：" << endl;
 	cin >> num;
 
 	uint16_t *array = new uint16_t[num];
-
+	*/
 	GameData gm;
-	gm.generateStatus(num, array);
+	/*gm.generateStatus(num, array);
 
 	for (uint16_t i = 0; i < num; i++) {
 		cout << array[i] << "  ";
-	}
+	}*/
+	gm.shuffleCards();
+	gm.viewPilesCards();
 	/*STATUSINFOMANAGEMENT status;
 	uint8_t count = status.count();
 
