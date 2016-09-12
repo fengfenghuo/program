@@ -1,0 +1,52 @@
+{
+    "status": [
+        {
+            "id": 10,
+            "num": 2,
+            "master": 1,
+            "loyal": 0,
+            "guilty": 0,
+            "rebel": 1
+        },
+        {
+            "id": 11,
+            "num": 4,
+            "master": 1,
+            "loyal": 1,
+            "guilty": 1,
+            "rebel": 1
+        },
+        {
+            "id": 12,
+            "num": 5,
+            "master": 1,
+            "loyal": 1,
+            "guilty": 1,
+            "rebel": 2
+        },
+        {
+            "id": 13,
+            "num": 6,
+            "master": 1,
+            "loyal": 1,
+            "guilty": 1,
+            "rebel": 3
+        },
+        {
+            "id": 14,
+            "num": 7,
+            "master": 1,
+            "loyal": 2,
+            "guilty": 1,
+            "rebel": 3
+        },
+        {
+            "id": 15,
+            "num": 8,
+            "master": 1,
+            "loyal": 2,
+            "guilty": 1,
+            "rebel": 4
+        }
+    ]
+}

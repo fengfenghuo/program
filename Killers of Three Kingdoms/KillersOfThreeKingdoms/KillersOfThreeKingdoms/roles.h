@@ -13,6 +13,7 @@ typedef struct roles_info{
 
 typedef struct player {
 	uint16_t role_num;
+	uint16_t status;
 	uint32_t role_id;
 	uint16_t max_blood;
 	uint16_t cur_blood;

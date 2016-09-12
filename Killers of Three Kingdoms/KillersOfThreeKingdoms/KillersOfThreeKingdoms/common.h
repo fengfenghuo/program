@@ -16,6 +16,13 @@ using namespace std;
 #define CARDS_EQUIPMENT_HORSE_PLUS 6
 #define CARDS_EQUIPMENT_HORSE_MINUS 7
 
+#define ROLES_CHOOSE_NUM 4
+
+#define STATUS_NUM 4  //身份数
+#define STATUS_MASTER 1 //主公
+#define STATUS_LOYAL 2  //忠臣
+#define STATUS_GUILTY 3  //内奸
+#define STATUS_REBEL 4  //反贼
 
 uint8_t strToArray(const char *source, uint8_t *array);
 

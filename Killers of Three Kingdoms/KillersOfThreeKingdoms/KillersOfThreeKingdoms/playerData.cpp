@@ -10,6 +10,7 @@ PlayerData::PlayerData() {
 	player_info.cur_blood = 0;
 	player_info.role_name = '\0';
 	player_info.role_power = '\0';
+	player_info.status = 0;
 	player_info.cur_state = 0;
 	player_info.max_cards = 0;
 	player_info.cards_num = 0;
@@ -86,6 +87,7 @@ void PlayerData::viewJudgementCards(bool isShow){
 		}
 	}
 }
+
 void PlayerData::viewRoleCard() {
 	rolesInfoManagement role_man;
 	ROLESINFO * roleInfo = role_man.findRoleById(player_info.role_id);
@@ -104,6 +106,55 @@ void PlayerData::viewRoleCard() {
 	else {
 		cout << "无此武将信息" << endl;
 	}
+}
+
+void PlayerData::viewRolesCard(uint32_t *roles, uint16_t role_num) {
+	rolesInfoManagement role_man;
+
+	for (uint16_t i = 0; i < role_num; i++) {
+		ROLESINFO * roleInfo = role_man.findRoleById(roles[i]);
+		if (roleInfo != NULL) {
+			cout << "武将编号： " << "[" << i << "]" << endl;
+			cout << "武将名：   " << roleInfo->name << endl;
+			cout << "武将上限体力：  " << roleInfo->blood << endl;
+			cout << "武将所属势力：  " << roleInfo->power << endl;
+			cout << "武将技能： " << endl;
+
+			for (uint16_t j = 0; j < roleInfo->skill_num; j++) {
+				cout << "[" << j << "]" << roleInfo->skill[j] << endl;
+			}
+		}
+		else {
+			cout << "无此武将信息" << endl;
+		}
+	}
+}
+
+bool  PlayerData::chooseRoleCard(uint32_t *roles, uint16_t index) {
+	rolesInfoManagement role_man;
+	ROLESINFO * roleInfo = role_man.findRoleById(roles[index]);
+
+	if (roleInfo != NULL) {
+		player_info.max_blood = player_info.status == STATUS_MASTER ? roleInfo->blood + 1 : roleInfo->blood;
+		player_info.cur_blood = player_info.max_blood;
+		player_info.role_id = roleInfo->id;
+		player_info.role_name = roleInfo->name;
+		player_info.role_power = roleInfo->power;
+		return true;
+	}
+	return false;
+}
+
+bool PlayerData::chooseRoleCard(uint32_t *roles, string name) {
+	return false;
+}
+
+bool PlayerData::setRoleStatus(uint16_t status) {
+	if (player_info.status == 0 && status >= STATUS_MASTER && status <= STATUS_REBEL) {
+		player_info.status = status;
+		return true;
+	}
+	return false;
 }
 
 bool PlayerData::isCardCanPlay(uint32_t id) {

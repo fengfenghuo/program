@@ -160,6 +160,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="playerData.cpp" />
     <ClCompile Include="rolesInfoManagement.cpp" />
+    <ClCompile Include="statusInfoManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cards.h" />
@@ -177,6 +178,8 @@
     <ClInclude Include="playerData.h" />
     <ClInclude Include="roles.h" />
     <ClInclude Include="rolesInfoManagement.h" />
+    <ClInclude Include="status.h" />
+    <ClInclude Include="statusInfoManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\cards.json" />
