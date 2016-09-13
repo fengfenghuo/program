@@ -4,6 +4,7 @@
 #include "statusInfoManagement.h"
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
 
 GameData::GameData() {
 	m_roleCount = 0;
@@ -19,11 +20,14 @@ GameData::~GameData() {
 
 void GameData::viewPilesCards() {
 	for (uint16_t i = 0; i < CARDS_TOTAL; i++) {
-		cout << m_piles_cards[i].name << "  :" << m_piles_cards[i].points << "   ";
-		if (i % 5 == 0) {
+		cout << setiosflags(ios::left) << setw(3) << i << "." 
+			<<setiosflags(ios::left)  <<setw(10) <<m_piles_cards[i].name << "  :"
+			<< setiosflags(ios::left) << setw(4) <<m_piles_cards[i].points << "   ";
+		if ((i+1) % 5 == 0) {
 			cout << endl;
 		}
 	}
+	cout << endl;
 }
 
 bool GameData::setRoleCount(uint16_t role_count) {
@@ -161,6 +165,5 @@ bool GameData::shuffleCards() {
 			break;
 		}
 	}
-	cout << m_cards_count;
 	return true;
 }

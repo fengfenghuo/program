@@ -8,7 +8,7 @@ using namespace std;
 #define CARDS_JUDGEMENT_NUM 4
 #define SKILL_NUM 2
 
-#define CARDS_TOTAL 104
+#define CARDS_TOTAL 108
 
 #define CARDS_COLOR_SPADE 1
 #define CARDS_COLOR_PLUM 2
