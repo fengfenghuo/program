@@ -14,6 +14,7 @@ typedef struct roles_info{
 
 typedef struct player {
 	uint16_t role_num;
+	bool is_robot;
 	uint16_t status;
 	uint32_t role_id;
 	uint16_t max_blood;

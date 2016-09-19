@@ -229,109 +229,141 @@ bool PlayerData::isCardCanEquip(uint16_t index) {
 	return false;
 }
 
-uint32_t PlayerData::playCards(uint16_t index) {
-	if(m_playerInfo.cards_num == 0){
+bool PlayerData::drowCards(CLICARDS *cards, uint16_t card_count) {
+	if (cards == NULL || card_count <= 0) {
+		return false;
+	}
+	for (uint16_t i = 0; i < card_count; i++) {
+		memcpy(&m_playerInfo.cur_cards[m_playerInfo.cards_num++], &cards[i], sizeof(CLICARDS));
+	}
+	return true;
+}
+
+CLICARDS* PlayerData::putOneCardByIndex(uint16_t index) {
+	if (m_playerInfo.cards_num == 0) {
 		cout << "无手牌可使用" << endl;
-		return 0;
+		return NULL;
 	}
 
 	if (index >= m_playerInfo.cards_num) {
 		cout << "无此序号的手牌" << endl;
-		return 0;
+		return NULL;
 	}
 
-	uint32_t card_id = 0;
+	CLICARDS *card = new CLICARDS;
 	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
 		if (index > i) continue;
 		if (index == i) {
-			card_id = m_playerInfo.cur_cards[i].id;
+			memcpy(card, &m_playerInfo.cur_cards[index], sizeof(CLICARDS));
 		}
 		if (index == m_playerInfo.cards_num - 1) {
-			card_id = m_playerInfo.cur_cards[index].id;
+			memcpy(card, &m_playerInfo.cur_cards[index], sizeof(CLICARDS));
 			break;
 		}
 		memcpy(&m_playerInfo.cur_cards[i], &m_playerInfo.cur_cards[i + 1], sizeof(m_playerInfo.cur_cards[i + 1]));
 	}
 	m_playerInfo.cards_num--;
-	return card_id;
+	return card;
 }
 
-uint32_t PlayerData::playCards(string name) {
+CLICARDS* PlayerData::putOneCardByName(string name) {
 	if (m_playerInfo.cards_num == 0) {
 		cout << "无手牌可使用" << endl;
-		return 0;
+		return NULL;
 	}
 
-	int index = -1;
-
-	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
-		if (name == m_playerInfo.cur_cards[i].name) {
-			index = i;
-			break;
-		}
-	}
+	int index = curCardIndex(name);
 
 	if (index < 0) {
 		cout << "无此手牌可使用" << endl;
-		return 0;
+		return NULL;
 	}
-	
-	return playCards((uint16_t)index);
+
+	return putOneCardByIndex((uint16_t)index);
 }
 
-uint32_t PlayerData::playCards(uint32_t id){
-	return id;
+CLICARDS* PlayerData::playCards(uint16_t index) {
+	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
+		cout << "当前不在出牌阶段，不能出牌" << endl;
+		return NULL;
+	}
+
+	return putOneCardByIndex(index);
 }
 
-uint32_t PlayerData::discardCards(uint16_t index) {
-	return playCards(index);
+CLICARDS* PlayerData::playCards(string name) {
+	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
+		cout << "当前不在出牌阶段，不能出牌" << endl;
+		return NULL;
+	}
+
+	return putOneCardByName(name);
 }
 
-uint32_t PlayerData::discardCards(string name) {
-	return playCards(name);
+CLICARDS* PlayerData::playCards(uint32_t id){
+	return NULL;
 }
 
-uint32_t PlayerData::discardCards(uint32_t id) {
-	return id;
+CLICARDS* PlayerData::discardCards(uint16_t index) {
+	if (m_playerInfo.cur_state != GAME_STAGE_DISCARDS) {
+		cout << "当前不在弃牌阶段，不能弃牌" << endl;
+		return NULL;
+	}
+	return putOneCardByIndex(index);
 }
 
-uint32_t PlayerData::equipCards(uint16_t index) {
+CLICARDS* PlayerData::discardCards(string name) {
+	if (m_playerInfo.cur_state != GAME_STAGE_DISCARDS) {
+		cout << "当前不在弃牌阶段，不能弃牌" << endl;
+		return NULL;
+	}
+	return putOneCardByName(name);
+}
+
+CLICARDS* PlayerData::discardCards(uint32_t id) {
+	return NULL;
+}
+
+CLICARDS* PlayerData::equipCards(uint16_t index) {
+	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
+		cout << "当前不在出牌阶段，不能出牌" << endl;
+		return NULL;
+	}
+
 	if (!isCardCanEquip(index)) {
 		cout << "此卡牌不能装备！" << endl;
-		return m_playerInfo.cur_cards[index].id;
+		return NULL;
 	}
 
 	memcpy(&m_playerInfo.equip_cards[m_playerInfo.equip_num++], &m_playerInfo.cur_cards[index], sizeof(m_playerInfo.cur_cards[index]));
 	playCards(index);
 
-	return m_playerInfo.equip_cards[m_playerInfo.equip_num-1].id;
+	return &m_playerInfo.equip_cards[m_playerInfo.equip_num-1];
 }
 
-uint32_t PlayerData::equipCards(string name) {
+CLICARDS* PlayerData::equipCards(string name) {
+	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
+		cout << "当前不在出牌阶段，不能出牌" << endl;
+		return NULL;
+	}
+
 	if (m_playerInfo.cards_num == 0) {
 		cout << "无手牌可装备" << endl;
-		return 0;
+		return NULL;
 	}
 
-	int index = -1;
-
-	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
-		if (name == m_playerInfo.cur_cards[i].name) {
-			index = i;
-			break;
-		}
-	}
+	int index = curCardIndex(name);
 
 	if (index < 0) {
 		cout << "无此手牌可装备" << endl;
-		return 0;
+		return NULL;
 	}
 
 	return equipCards((uint16_t)index);
 }
 
-uint32_t PlayerData::equipCards(uint32_t id){
-	return id;
+CLICARDS* PlayerData::equipCards(uint32_t id){
+	return NULL;
 }
 
 bool PlayerData::playerBloodAdd(uint16_t n) {
@@ -352,10 +384,96 @@ bool PlayerData::playerBloodReduce(uint16_t n){
 	return true;
 }
 
+bool PlayerData::isRoleRobot() {
+	return m_playerInfo.is_robot;
+}
+
 bool PlayerData::useRoleSkill(uint16_t index) {
 	return true;
 }
 
 bool PlayerData::useRoleSkill(uint32_t id) {
 	return true;
+}
+
+bool PlayerData::isHorsePlus() {
+	for (int i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == CARDS_CATEGORY_EQUIPMENT_HORSE_PLUS) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool PlayerData::isHorseMinus() {
+	for (int i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == CARDS_CATEGORY_EQUIPMENT_HORSE_MINUS) {
+			return true;
+		}
+	}
+	return false;
+}
+
+uint16_t PlayerData::weaponRange() {
+	for (int i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == CARDS_CATEGORY_EQUIPMENT_WEAPON) {
+			return m_playerInfo.equip_cards[i].range;
+		}
+	}
+	return 0;
+}
+
+string PlayerData::playerRoleName() {
+	return m_playerInfo.role_name;
+}
+
+uint16_t PlayerData::playerRoleNum() {
+	return m_playerInfo.role_num;
+}
+
+uint16_t PlayerData::damageRange() {
+	return weaponRange() + (isHorseMinus() ? 1 : 0);
+}
+
+bool PlayerData::isCard_Sha() {
+	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
+		if (m_playerInfo.cur_cards[i].id == CARD_SHA) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool PlayerData::isCard_Shan(){
+	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
+		if (m_playerInfo.cur_cards[i].id == CARD_SHAN) {
+			return true;
+		}
+	}
+	return false;
+}
+
+uint32_t PlayerData::curCardId(uint16_t index) {
+	if (index >= m_playerInfo.cards_num) {
+		return 0;
+	}
+	return m_playerInfo.cur_cards[index].id;
+}
+
+int PlayerData::curCardIndex(string name) {
+	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
+		if (name == m_playerInfo.cur_cards[i].name) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+int PlayerData::curCardIndex(uint32_t id) {
+	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
+		if (id == m_playerInfo.cur_cards[i].id) {
+			return i;
+		}
+	}
+	return -1;
 }

@@ -18,20 +18,27 @@ public:
 	bool chooseRoleCard(uint32_t *roles, string name);
 
 	bool setRoleStatus(uint16_t status);
+	bool isRoleRobot();
 
 	string viewCardColor(CLICARDS card);
 
-	uint32_t playCards(uint16_t index);
-	uint32_t playCards(string name);
-	uint32_t playCards(uint32_t id);
+	bool drowCards(CLICARDS *cards, uint16_t card_count);
 
-	uint32_t discardCards(uint16_t index);
-	uint32_t discardCards(string name);
-	uint32_t discardCards(uint32_t id);
+	CLICARDS* putOneCardByIndex(uint16_t index);
+	CLICARDS* putOneCardByName(string name);
+	CLICARDS* putOneCardById(uint32_t id);
 
-	uint32_t equipCards(uint16_t index);
-	uint32_t equipCards(string name);
-	uint32_t equipCards(uint32_t id);
+	CLICARDS* playCards(uint16_t index);
+	CLICARDS* playCards(string name);
+	CLICARDS* playCards(uint32_t id);
+
+	CLICARDS* discardCards(uint16_t index);
+	CLICARDS* discardCards(string name);
+	CLICARDS* discardCards(uint32_t id);
+
+	CLICARDS* equipCards(uint16_t index);
+	CLICARDS* equipCards(string name);
+	CLICARDS* equipCards(uint32_t id);
 
 	bool isCardCanPlay(uint32_t id);
 	bool isCardCanEquip(uint32_t id);
@@ -42,6 +49,22 @@ public:
 
 	bool playerBloodAdd(uint16_t n = 1);
 	bool playerBloodReduce(uint16_t n = 1);
+
+	bool isHorsePlus();
+	bool isHorseMinus();
+
+	uint16_t weaponRange();
+	uint16_t playerRoleNum();
+	string playerRoleName();
+
+	uint16_t damageRange();
+
+	bool isCard_Sha();
+	bool isCard_Shan();
+
+	uint32_t curCardId(uint16_t index);
+	int curCardIndex(string name);
+	int curCardIndex(uint32_t id);
 
 private:
 	PLAYERINFO m_playerInfo;

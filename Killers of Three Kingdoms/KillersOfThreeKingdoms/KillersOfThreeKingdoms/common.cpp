@@ -22,6 +22,19 @@ uint16_t strToArray(const char *source, uint16_t *array) {
 	return num;
 }
 
+int strToInt(string source) {
+	int num = -1;
+
+	size_t source_len = source.length();
+	
+	for (size_t i = 0; i < source_len; i++) {
+		if (source[i] >= '0' && source[i] <= '9') {
+			num = num * 10 + source[i] - '0';
+		}
+	}
+	return num;
+}
+
 std::string UTF8_To_string(const std::string & str)
 {
 	int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
