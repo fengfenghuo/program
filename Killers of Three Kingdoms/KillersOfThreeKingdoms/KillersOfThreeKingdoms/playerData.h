@@ -7,64 +7,71 @@ public:
 	PlayerData();
 	~PlayerData();
 
-	void viewCurCards(bool isShow);
-	void viewEquipCards(bool isShow);
-	void viewJudgementCards(bool isShow);
+	void viewCurCards(bool isShow = true, uint16_t start = 0);
+	void viewEquipCards(bool isShow = true, uint16_t start = 0);
+	void viewJudgementCards(bool isShow = true, uint16_t start = 0);
 	void viewRoleCard();
 	void viewRolesCard(uint32_t *roles, uint16_t role_num = ROLES_CHOOSE_NUM);
 	void viewRolesCard(uint16_t *roles_identity, uint16_t role_num = ROLES_CHOOSE_NUM);
 
-	bool chooseRoleCard(uint32_t *roles, uint16_t index);
+	bool chooseRoleCard(uint32_t *roles, uint16_t index);         //选择英雄
 	bool chooseRoleCard(uint32_t *roles, string name);
+	bool setRoleStatus(uint16_t status);                          //设置角色身份
+	bool drowCards(CLICARDS *cards, uint16_t card_count);         //得到手牌
 
-	bool setRoleStatus(uint16_t status);
-	bool isRoleRobot();
+	bool playerBloodAdd(uint16_t n = 1);                          //英雄加体力
+	bool playerBloodReduce(uint16_t n = 1);                       //英雄减体力
+	bool isplayerAlive();                                         //英雄是否存活
 
-	string viewCardColor(CLICARDS card);
-
-	bool drowCards(CLICARDS *cards, uint16_t card_count);
-
-	CLICARDS* putOneCardByIndex(uint16_t index);
-	CLICARDS* putOneCardByName(string name);
-	CLICARDS* putOneCardById(uint32_t id);
-
-	CLICARDS* playCards(uint16_t index);
+	CLICARDS* playCards(uint16_t index);                          //出牌
 	CLICARDS* playCards(string name);
 	CLICARDS* playCards(uint32_t id);
 
-	CLICARDS* discardCards(uint16_t index);
+	CLICARDS* discardCards(uint16_t index);                       //弃手牌
 	CLICARDS* discardCards(string name);
 	CLICARDS* discardCards(uint32_t id);
 
-	CLICARDS* equipCards(uint16_t index);
+	CLICARDS* discardEquipCards(uint16_t index);                  //弃装备牌
+	CLICARDS* discardJudgementCards(uint16_t index);              //弃判定牌
+
+	CLICARDS* equipCards(uint16_t index);                         //装备牌
 	CLICARDS* equipCards(string name);
 	CLICARDS* equipCards(uint32_t id);
 
+	bool isRoleRobot();                                           //是不是机器人
 	bool isCardCanPlay(uint32_t id);
 	bool isCardCanEquip(uint32_t id);
 	bool isCardCanEquip(uint16_t index);
+	bool isHorsePlus();                                           //有没有+1马
+	bool isHorseMinus();                                          //有没有-1马
+	bool isCard_Sha();                                            //是否有【杀】
+	bool isCard_Shan();                                           //是否有【闪】
+	bool isCurCardEmpty();                                        //是否有手牌
+	bool isJudgeCardEmpty();                                      //是否有判定牌
+	bool isEquipCardEmpty();                                      //是否有装备牌
+	
+	uint16_t damageRange();                                       //可攻击范围
+	uint16_t weaponRange();                                       //武器攻击范围
+	uint16_t playerRoleNum();                                     //英雄身份号
+	string playerRoleName();                                      //英雄名字
+	uint16_t cardCurNum();                                        //手牌数
+	uint16_t cardEquipNum();                                      //装备牌数
+	uint16_t cardJudgeNum();                                      //判定牌数
+	CLICARDS* equipWeapon();                                      //装备武器
 
+	uint32_t curCardId(uint16_t index);                           //第index手牌的ID
+	int curCardIndex(string name);                                //名字为name牌的位置
+	int curCardIndex(uint32_t id);                                //ID为id牌的位置
+
+	//未实现
 	bool useRoleSkill(uint16_t index);
 	bool useRoleSkill(uint32_t id);
 
-	bool playerBloodAdd(uint16_t n = 1);
-	bool playerBloodReduce(uint16_t n = 1);
-
-	bool isHorsePlus();
-	bool isHorseMinus();
-
-	uint16_t weaponRange();
-	uint16_t playerRoleNum();
-	string playerRoleName();
-
-	uint16_t damageRange();
-
-	bool isCard_Sha();
-	bool isCard_Shan();
-
-	uint32_t curCardId(uint16_t index);
-	int curCardIndex(string name);
-	int curCardIndex(uint32_t id);
+	//////////////////////////////////////////////////////////////////////////////////
+private:
+	CLICARDS* putOneCardByIndex(uint16_t index);
+	CLICARDS* putOneCardByName(string name);
+	CLICARDS* putOneCardById(uint32_t id);
 
 private:
 	PLAYERINFO m_playerInfo;

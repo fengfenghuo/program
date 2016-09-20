@@ -3,11 +3,19 @@
 #include <iostream>
 using namespace std;
 
+///////////////ERROR//////////////////
+#define ERROR_SYSTEM_ERROR -1
+#define ERROR_TARGET_ERROR 99
+#define ERROR_NO_RESPONSE -2
+#define ERROR_NO_ACTIVE -3
+/////////////////////////////////
+
 #define CARDS_NUM 16
 #define CARDS_EQUIP_NUM 4
 #define CARDS_JUDGEMENT_NUM 4
 #define CARDS_MAX_NUM 99
 #define SKILL_NUM 2
+#define CARDS_DEALS 2
 
 #define CARDS_TOTAL 108
 
@@ -71,5 +79,6 @@ using namespace std;
 
 uint16_t strToArray(const char *source, uint16_t *array);
 int strToInt(string source);
+string viewCardColor(int point, uint16_t color);
 
 std::string UTF8_To_string(const std::string & str);

@@ -16,12 +16,17 @@ public:
 	bool shuffleCards();
 	bool dealCards(uint16_t cards_count, CLICARDS * cards);
 	int applyCardPlay(CLICARDS *card, uint16_t role_num);
+	uint16_t roleAliveNum();
 
 	//////////////////////////////////////////
 	//Ñ¡ÔñÄ¿±ê
-	int chooseTarget(uint16_t distance, uint16_t role_num);
+	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon);
 	int applyDamage(uint32_t card_id, uint16_t source_num, uint16_t target_num);
+	int applyDamageAll(uint32_t card_id, uint16_t source_num);
 	int applyPlayCard(uint32_t card_id, uint16_t target_num);
+	int applyCardRemove(uint32_t card_id, uint16_t source_num, uint16_t target_num);
+	int applyCardDuel(uint16_t source_num, uint16_t target_num);
+	int applyCardDeals(uint16_t cards_count, CLICARDS * cards);
 	//////////////////////////////////////////
 
 	void viewPilesCards();

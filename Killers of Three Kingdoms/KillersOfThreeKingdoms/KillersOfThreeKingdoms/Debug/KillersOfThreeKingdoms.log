@@ -1,17 +1,16 @@
-﻿  gameData.cpp
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(241): warning C4065: switch 语句包含“default”但是未包含“case”标签
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(248): warning C4065: switch 语句包含“default”但是未包含“case”标签
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(255): warning C4065: switch 语句包含“default”但是未包含“case”标签
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(262): warning C4065: switch 语句包含“default”但是未包含“case”标签
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(269): warning C4065: switch 语句包含“default”但是未包含“case”标签
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(196): warning C4101: “role”: 未引用的局部变量
+﻿  playerData.cpp
+  gameData.cpp
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(390): warning C4065: switch 语句包含“default”但是未包含“case”标签
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(397): warning C4065: switch 语句包含“default”但是未包含“case”标签
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(404): warning C4065: switch 语句包含“default”但是未包含“case”标签
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(411): warning C4065: switch 语句包含“default”但是未包含“case”标签
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(418): warning C4065: switch 语句包含“default”但是未包含“case”标签
   common.cpp
   正在生成代码...
-d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(271): warning C4715: “GameData::applyCardPlay”: 不是所有的控件路径都返回值
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(420): warning C4715: “GameData::applyCardPlay”: 不是所有的控件路径都返回值
   正在编译...
   statusInfoManagement.cpp
   rolesInfoManagement.cpp
-  playerData.cpp
   main.cpp
   cardsInfoManagement.cpp
   正在生成代码...

@@ -61,3 +61,28 @@ std::string UTF8_To_string(const std::string & str)
 
 	return retStr;
 }
+
+string viewCardColor(int point, uint16_t color) {
+	string card_color;
+	char buff[8];
+	switch (color)
+	{
+	case 0:
+		card_color = "黑桃  ";
+		break;
+	case 1:
+		card_color = "梅花  ";
+		break;
+	case 2:
+		card_color = "红桃  ";
+		break;
+	case 3:
+		card_color = "方块  ";
+		break;
+	default:
+		card_color = "花色有误";
+		return card_color;
+	}
+	card_color += _itoa_s(point, buff, 10);
+	return card_color;
+}
