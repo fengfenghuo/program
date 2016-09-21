@@ -30,7 +30,7 @@ GameData::~GameData() {
 void GameData::viewPilesCards() {
 	for (uint16_t i = 0; i < CARDS_TOTAL; i++) {
 		cout << setiosflags(ios::left) << setw(3) << i << "."
-			<< setiosflags(ios::left) << setw(10) << m_piles_cards[i].name << "  :"
+			<< setiosflags(ios::left) << setw(10) << m_piles_cards[i].name << m_piles_cards[i].id << "  :"
 			<< setiosflags(ios::left) << setw(4) << m_piles_cards[i].points << "   ";
 		if ((i + 1) % 5 == 0) {
 			cout << endl;
