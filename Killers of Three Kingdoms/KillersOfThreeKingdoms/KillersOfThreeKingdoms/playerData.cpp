@@ -70,15 +70,16 @@ void PlayerData::viewRoleCard() {
 	ROLESINFO * roleInfo = role_man.findRoleById(m_playerInfo.role_id);
 
 	if (roleInfo != NULL) {
-		cout << "武将名：   " << roleInfo->name << endl;
-		cout << "武将上限体力：  " << roleInfo->blood << endl;
+		cout << "武将名：   " << m_playerInfo.role_name << endl;
+		cout << "武将上限体力：  " << m_playerInfo.max_blood << endl;
 		cout << "武将当前体力：  " << m_playerInfo.cur_blood << endl;
-		cout << "武将所属势力：  " << roleInfo->power << endl;
+		cout << "武将所属势力：  " << m_playerInfo.role_power << endl;
 		cout << "武将技能： " << endl;
 
 		for (uint16_t i = 0; i < roleInfo->skill_num; i++) {
 			cout << "[" << i << "]" << roleInfo->skill[i] << endl;
 		}
+		cout << endl;
 	}
 	else {
 		cout << "无此武将信息" << endl;
@@ -129,10 +130,7 @@ void PlayerData::viewRolesCard(uint16_t *roles_identity, uint16_t role_num) {
 	}
 }
 
-bool  PlayerData::chooseRoleCard(uint32_t *roles, uint16_t index) {
-	rolesInfoManagement role_man;
-	ROLESINFO * roleInfo = role_man.findRoleById(roles[index]);
-
+bool  PlayerData::setRoleInfo(ROLESINFO * roleInfo) {
 	if (roleInfo != NULL) {
 		m_playerInfo.max_blood = m_playerInfo.status == STATUS_MASTER ? roleInfo->blood + 1 : roleInfo->blood;
 		m_playerInfo.cur_blood = m_playerInfo.max_blood;
@@ -144,13 +142,11 @@ bool  PlayerData::chooseRoleCard(uint32_t *roles, uint16_t index) {
 	return false;
 }
 
-bool PlayerData::chooseRoleCard(uint32_t *roles, string name) {
-	return false;
-}
-
-bool PlayerData::setRoleStatus(uint16_t status) {
+bool PlayerData::setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot) {
 	if (m_playerInfo.status == 0 && status >= STATUS_MASTER && status <= STATUS_REBEL) {
 		m_playerInfo.status = status;
+		m_playerInfo.role_num = role_num;
+		m_playerInfo.is_robot = isRobot;
 		return true;
 	}
 	return false;
@@ -384,6 +380,10 @@ uint16_t PlayerData::playerRoleNum() {
 	return m_playerInfo.role_num;
 }
 
+uint16_t PlayerData::playerRoleStatus() {
+	return m_playerInfo.status;
+}
+
 uint16_t PlayerData::damageRange() {
 	return weaponRange() + (isHorseMinus() ? 1 : 0);
 }
@@ -485,6 +485,10 @@ CLICARDS* PlayerData::equipCardByCategory(uint8_t category){
 		}
 	}
 	return NULL;
+}
+
+PLAYERINFO * PlayerData::playerInfo() {
+	return &m_playerInfo;
 }
 
 /////////////////////////////////////////////////////

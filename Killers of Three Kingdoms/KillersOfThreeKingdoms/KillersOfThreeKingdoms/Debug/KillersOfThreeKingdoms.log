@@ -1,3 +1,4 @@
-﻿  main.cpp
+﻿  gameData.cpp
+d:\work\program\killers of three kingdoms\killersofthreekingdoms\killersofthreekingdoms\gamedata.cpp(501): warning C4065: switch 语句包含“default”但是未包含“case”标签
   KillersOfThreeKingdoms.vcxproj -> D:\Work\program\Killers of Three Kingdoms\KillersOfThreeKingdoms\Debug\KillersOfThreeKingdoms.exe
   KillersOfThreeKingdoms.vcxproj -> D:\Work\program\Killers of Three Kingdoms\KillersOfThreeKingdoms\Debug\KillersOfThreeKingdoms.pdb (Full PDB)

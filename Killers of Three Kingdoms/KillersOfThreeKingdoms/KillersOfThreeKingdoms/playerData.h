@@ -14,9 +14,9 @@ public:
 	void viewRolesCard(uint32_t *roles, uint16_t role_num = ROLES_CHOOSE_NUM);
 	void viewRolesCard(uint16_t *roles_identity, uint16_t role_num = ROLES_CHOOSE_NUM);
 
-	bool chooseRoleCard(uint32_t *roles, uint16_t index);         //选择英雄
-	bool chooseRoleCard(uint32_t *roles, string name);
-	bool setRoleStatus(uint16_t status);                          //设置角色身份
+	bool setRoleInfo(ROLESINFO * roleInfo);                    //选择英雄
+
+	bool setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot);       //设置角色身份
 	bool drowCards(CLICARDS *cards, uint16_t card_count);         //得到手牌
 
 	bool playerBloodAdd(uint16_t n = 1);                          //英雄加体力
@@ -38,6 +38,7 @@ public:
 	bool equipCards(CLICARDS *card);                               //装备牌
 
 	CLICARDS* equipCardByCategory(uint8_t category);              //categor类型的装备
+	PLAYERINFO * playerInfo();
 
 	bool isRoleRobot();                                           //是不是机器人
 	bool isCardCanPlay(uint32_t id);
@@ -54,6 +55,7 @@ public:
 	uint16_t damageRange();                                       //可攻击范围
 	uint16_t weaponRange();                                       //武器攻击范围
 	uint16_t playerRoleNum();                                     //英雄身份号
+	uint16_t playerRoleStatus();                                  //英雄身份
 	string playerRoleName();                                      //英雄名字
 	uint16_t cardCurNum();                                        //手牌数
 	uint16_t cardEquipNum();                                      //装备牌数

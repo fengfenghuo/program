@@ -11,11 +11,12 @@ public:
 	~GameData();
 
 	bool setRoleCount(uint16_t role_count);
-	bool generateStatus(uint16_t role_count, uint16_t *roles);
-	bool generateRoles(uint16_t role_status, uint16_t *roles_identity);
+	int generateStatus(uint16_t role_count);
+	bool generateRoles();
 	bool shuffleCards();
 	bool dealCards(uint16_t cards_count, CLICARDS * cards);
 	int applyCardPlay(CLICARDS *card, uint16_t role_num);
+	PLAYERINFO* findPlayerInfoByNum(uint16_t role_num);
 	uint16_t roleAliveNum();
 
 	//////////////////////////////////////////
@@ -30,6 +31,9 @@ public:
 	//////////////////////////////////////////
 
 	void viewPilesCards();
+	void viewPlayersStatus();
+	void viewRoleInfo(ROLESINFO * role);
+	void viewPlayersRole();
 
 private:
 	uint16_t m_roleCount;

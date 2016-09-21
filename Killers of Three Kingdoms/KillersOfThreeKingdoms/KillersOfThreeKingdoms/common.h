@@ -18,6 +18,7 @@ using namespace std;
 #define CARDS_DEALS 2
 
 #define CARDS_TOTAL 108
+#define ROLES_TOTAL 27
 
 #define CARDS_COLOR_SPADE 1
 #define CARDS_COLOR_PLUM 2
@@ -35,11 +36,13 @@ using namespace std;
 #define ROLES_CHOOSE_NUM 3
 #define ROLES_MAX_NUM 8
 
-#define STATUS_NUM 4  //身份数
+#define STATUS_NUM 4      //最多身份数
+#define STATUS_MIN_NUM 2  //最少身份数
 #define STATUS_MASTER 1 //主公
-#define STATUS_LOYAL 2  //忠臣
-#define STATUS_GUILTY 3  //内奸
-#define STATUS_REBEL 4  //反贼
+#define STATUS_REBEL 2  //反贼
+#define STATUS_LOYAL 3  //忠臣
+#define STATUS_GUILTY 4  //内奸
+
 
 #define GAME_STAGE_START 1 //准备
 #define GAME_STAGE_JUDGE 2 //判定
@@ -80,5 +83,6 @@ using namespace std;
 uint16_t strToArray(const char *source, uint16_t *array);
 int strToInt(string source);
 string viewCardColor(int point, uint16_t color);
+string viewRoleStatus(uint16_t status);
 
 std::string UTF8_To_string(const std::string & str);

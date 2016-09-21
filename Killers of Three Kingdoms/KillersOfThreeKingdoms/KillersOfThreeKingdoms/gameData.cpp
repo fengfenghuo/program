@@ -39,18 +39,55 @@ void GameData::viewPilesCards() {
 	cout << endl;
 }
 
+void GameData::viewPlayersStatus() {
+	for (uint16_t i = 0; i < m_roleCount; i++) {
+		cout << "[" << i << "]. " << m_players[i].playerRoleName() << "***" << viewRoleStatus(m_players[i].playerRoleStatus());
+		cout << "   身份号：" << m_players[i].playerRoleNum() << "   机器人：" << m_players[i].isRoleRobot() << endl;
+	}
+	cout << endl;
+}
+
+void GameData::viewRoleInfo(ROLESINFO * role) {
+	cout << setiosflags(ios::left) << setw(5) << "名字：" << setw(8) << role->name;
+	cout << setiosflags(ios::left) << setw(5) << "  体力：" << setw(3) << role->blood;
+	cout << setiosflags(ios::left) << setw(5) << "  势力：" << setw(3) << role->power << endl;
+	
+	for (uint16_t i = 0; i < role->skill_num; i++) {
+		cout << setiosflags(ios::left) << setw(5) << "技能：" << i + 1;
+		cout << role->skill[i] << endl;
+	}
+	cout << endl;
+}
+
+void GameData::viewPlayersRole() {
+	for (uint16_t i = 0; i < m_roleCount; i++) {
+		cout << "【" << i << "】" << "号位" << endl;
+		m_players[i].viewRoleCard();
+	}
+}
+
 bool GameData::setRoleCount(uint16_t role_count) {
 	m_roleCount = role_count;
 	return true;
 }
+PLAYERINFO* GameData::findPlayerInfoByNum(uint16_t role_num) {
+	for (uint16_t i = 0; i < m_roleCount; i++) {
+		if (m_players[i].playerRoleNum() == role_num) {
+			return m_players[i].playerInfo();
+		}
+	}
+	return NULL;
+}
 
-bool GameData::generateStatus(uint16_t role_count, uint16_t *roles_status) {
+int GameData::generateStatus(uint16_t role_count) {
+	uint16_t *roles_status = new uint16_t[role_count];
+
 	memset(roles_status, 0, sizeof(uint16_t)*role_count);
 	STATUSINFOMANAGEMENT status_man;
 
 	STATUSINFO* status_info = status_man.findCardByNum(role_count);
 	if (status_info == NULL) {
-		return false;
+		return ERROR_SYSTEM_ERROR;
 	}
 
 	uint16_t master = status_info->master;
@@ -58,8 +95,8 @@ bool GameData::generateStatus(uint16_t role_count, uint16_t *roles_status) {
 	uint16_t guilty = status_info->guilty;
 	uint16_t rebel = status_info->rebel;
 
+	srand((unsigned)time(NULL));
 	for (uint16_t i = 0; i < role_count; i++) {
-		srand((unsigned)time(NULL));
 		int num = rand() % role_count;
 
 		while (roles_status[num] != 0 && num < role_count
@@ -89,16 +126,89 @@ bool GameData::generateStatus(uint16_t role_count, uint16_t *roles_status) {
 			--rebel;
 		}
 	}
-	return true;
+
+	int player_statue = rand() % (status_info->loyal + status_info->guilty > 0 ? STATUS_NUM : STATUS_MIN_NUM) + 1;
+	bool only_signal = true;
+
+	uint16_t j = 0;
+	while (roles_status[j] != STATUS_MASTER) {
+		j++;
+	}
+
+	for (uint16_t i = 0; i < role_count; i++) {
+		bool is_robot = true;
+		if ((uint16_t)player_statue == roles_status[j] && only_signal == true) {
+			player_statue = i;
+			is_robot = false;
+			only_signal = false;
+		}
+
+		m_players[i].setRoleStatus(roles_status[j], j, is_robot);
+		j++;
+		if (j == role_count) {
+			j = 0;
+		}
+	}
+	delete[]roles_status;
+	return player_statue;
 }
 
-bool GameData::generateRoles(uint16_t role_status, uint16_t *roles_identity) {
+bool GameData::generateRoles() {
 	ROLESINFOMANAGEMENT role_man;
+	char roles[ROLES_TOTAL] = { 0 };
+	uint16_t *roles_identity = new uint16_t[m_roleCount * ROLES_CHOOSE_NUM];
 
 	uint16_t role_count = role_man.count();
 	for (uint16_t i = 0; i < m_roleCount * ROLES_CHOOSE_NUM; i++) {
-		roles_identity[i] = rand() % role_count;
+		uint16_t num = rand() % role_count + 1;
+		while (roles[num-1] == 1) {
+			num = rand() % role_count + 1;
+		}
+		roles_identity[i] = num;
+		roles[num - 1] = 1;
 	}
+
+	for (uint16_t j = 0; j < m_roleCount; j++) {
+		ROLESINFO * role = NULL;
+		if (m_players[j].isRoleRobot()) {
+			uint16_t num = rand() % ROLES_CHOOSE_NUM + j * ROLES_CHOOSE_NUM;
+			role = role_man.findRoleByIdentity(roles_identity[num]);
+			if (role == NULL) {
+				return false;
+			}
+			//m_players[j].setRoleInfo(role);
+		}
+		else {
+			for (uint16_t k = 0; k < ROLES_CHOOSE_NUM; k++) {
+				role = role_man.findRoleByIdentity(roles_identity[j * ROLES_CHOOSE_NUM + k]);
+				if (role == NULL) continue;
+				cout << "[" << k << "]" << endl;
+				viewRoleInfo(role);
+			}
+			uint16_t in_num;
+
+			while (true) {
+				cout << "请选择对应的英雄编号：";
+				cin >> in_num;
+
+				if (in_num < 0 && in_num >= ROLES_CHOOSE_NUM) {
+					cout << "输入错误，请重新输入：";
+				}
+				else {
+					break;
+				}
+			}
+
+			role = role_man.findRoleByIdentity(roles_identity[j * ROLES_CHOOSE_NUM + in_num]);
+			if (role == NULL) {
+				return false;
+			}
+		}
+
+		m_players[j].setRoleInfo(role);
+	}
+
+	delete[]roles_identity;
 	return true;
 }
 

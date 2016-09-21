@@ -86,3 +86,27 @@ string viewCardColor(int point, uint16_t color) {
 	card_color += _itoa_s(point, buff, 10);
 	return card_color;
 }
+
+string viewRoleStatus(uint16_t status) {
+	string card_status;
+
+	switch (status)
+	{
+	case STATUS_MASTER:
+		card_status = "主公  ";
+		break;
+	case STATUS_LOYAL:
+		card_status = "忠臣  ";
+		break;
+	case STATUS_GUILTY:
+		card_status = "内奸  ";
+		break;
+	case STATUS_REBEL:
+		card_status = "反贼  ";
+		break;
+	default:
+		card_status = "身份有误";
+		return card_status;
+	}
+	return card_status;
+}
