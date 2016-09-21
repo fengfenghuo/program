@@ -32,11 +32,12 @@ public:
 	CLICARDS* discardCards(uint32_t id);
 
 	CLICARDS* discardEquipCards(uint16_t index);                  //弃装备牌
+	CLICARDS* discardEquipCards(uint8_t category);                //弃装备牌
 	CLICARDS* discardJudgementCards(uint16_t index);              //弃判定牌
 
-	CLICARDS* equipCards(uint16_t index);                         //装备牌
-	CLICARDS* equipCards(string name);
-	CLICARDS* equipCards(uint32_t id);
+	bool equipCards(CLICARDS *card);                               //装备牌
+
+	CLICARDS* equipCardByCategory(uint8_t category);              //categor类型的装备
 
 	bool isRoleRobot();                                           //是不是机器人
 	bool isCardCanPlay(uint32_t id);

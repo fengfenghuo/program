@@ -310,62 +310,19 @@ CLICARDS* PlayerData::discardCards(uint32_t id) {
 	return putOneCardById(id);
 }
 
-CLICARDS* PlayerData::equipCards(uint16_t index) {
-	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
-		cout << "当前不在出牌阶段，不能出牌" << endl;
-		return NULL;
+bool PlayerData::equipCards(CLICARDS *card) {
+	if (card->category != CARDS_CATEGORY_EQUIPMENT_WEAPON
+		&& card->category != CARDS_CATEGORY_EQUIPMENT_ARMOR
+		&& card->category != CARDS_CATEGORY_EQUIPMENT_HORSE_PLUS
+		&& card->category != CARDS_CATEGORY_EQUIPMENT_HORSE_MINUS) {
+		return false;
 	}
 
-	if (!isCardCanEquip(index)) {
-		cout << "此卡牌不能装备！" << endl;
-		return NULL;
+	if (equipCardByCategory(card->category) != NULL) {
+		discardEquipCards(card->category);
 	}
-
-	memcpy(&m_playerInfo.equip_cards[m_playerInfo.equip_num++], &m_playerInfo.cur_cards[index], sizeof(m_playerInfo.cur_cards[index]));
-	playCards(index);
-
-	return &m_playerInfo.equip_cards[m_playerInfo.equip_num-1];
-}
-
-CLICARDS* PlayerData::equipCards(string name) {
-	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
-		cout << "当前不在出牌阶段，不能出牌" << endl;
-		return NULL;
-	}
-
-	if (m_playerInfo.cards_num == 0) {
-		cout << "无手牌可装备" << endl;
-		return NULL;
-	}
-
-	int index = curCardIndex(name);
-
-	if (index < 0) {
-		cout << "无此手牌可装备" << endl;
-		return NULL;
-	}
-
-	return equipCards((uint16_t)index);
-}
-
-CLICARDS* PlayerData::equipCards(uint32_t id){
-	if (m_playerInfo.cur_state != GAME_STAGE_PLAY) {
-		cout << "当前不在出牌阶段，不能出牌" << endl;
-		return NULL;
-	}
-
-	if (m_playerInfo.cards_num == 0) {
-		cout << "无手牌可装备" << endl;
-		return NULL;
-	}
-
-	int index = curCardIndex(id);
-
-	if (index < 0) {
-		cout << "无此手牌可装备" << endl;
-		return NULL;
-	}
-	return equipCards((uint16_t)index);
+	memcpy(&m_playerInfo.equip_cards[m_playerInfo.equip_num++], card, sizeof(CLICARDS));
+	return true;
 }
 
 bool PlayerData::playerBloodAdd(uint16_t n) {
@@ -508,6 +465,27 @@ CLICARDS* PlayerData::equipWeapon() {
 	return NULL;
 }
 
+bool PlayerData::isplayerAlive() {
+	return m_playerInfo.cur_blood == 0 ? false : true;
+}
+
+CLICARDS* PlayerData::discardEquipCards(uint8_t category) {
+	for (uint16_t i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == category) {
+			return discardEquipCards(i);
+		}
+	}
+	return NULL;
+}
+
+CLICARDS* PlayerData::equipCardByCategory(uint8_t category){
+	for (uint16_t i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == category) {
+			return &m_playerInfo.equip_cards[i];
+		}
+	}
+	return NULL;
+}
 
 /////////////////////////////////////////////////////
 bool PlayerData::useRoleSkill(uint16_t index) {
@@ -579,6 +557,3 @@ CLICARDS* PlayerData::putOneCardById(uint32_t id) {
 	return putOneCardByIndex((uint16_t)index);
 }
 
-bool PlayerData::isplayerAlive() {
-	return m_playerInfo.cur_blood == 0 ? false : true;
-}

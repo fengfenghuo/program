@@ -124,6 +124,8 @@ bool GameData::shuffleCards() {
 	uint16_t diamond_count = 0;
 	CARDSINFO * card_info = NULL;
 
+	srand((unsigned)time(NULL));
+
 	for (uint32_t i = 0, j = 0; i < CARDS_TOTAL, j < cards_count; i++) {
 		if (spade_count == 0 && plum_count == 0 && heart_count == 0 && diamond_count == 0) {
 			card_info = cards_man.at(j++);
@@ -136,7 +138,6 @@ bool GameData::shuffleCards() {
 			diamond_count = card_info->diamond_num;
 		}
 
-		srand((unsigned)time(NULL));
 		int num = rand() % CARDS_TOTAL;
 
 		while (m_piles_cards[num].id != 0 && num < CARDS_TOTAL
@@ -389,34 +390,17 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 			break;
 		}
 	}
-	else if (card->category == CARDS_CATEGORY_EQUIPMENT_WEAPON) {
-		switch (card->id)
-		{
-		default:
-			break;
+	else if (card->category == CARDS_CATEGORY_EQUIPMENT_WEAPON 
+		|| card->category == CARDS_CATEGORY_EQUIPMENT_ARMOR
+		|| card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_PLUS
+		|| card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_MINUS) {
+		if (!m_players[role_num].equipCards(card)) {
+			cout << "装备牌出错了~" << endl;
+			return ERROR_SYSTEM_ERROR;
 		}
+		return 0;
 	}
-	else if (card->category == CARDS_CATEGORY_EQUIPMENT_ARMOR) {
-		switch (card->id)
-		{
-		default:
-			break;
-		}
-	}
-	else if (card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_PLUS) {
-		switch (card->id)
-		{
-		default:
-			break;
-		}
-	}
-	else if (card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_MINUS) {
-		switch (card->id)
-		{
-		default:
-			break;
-		}
-	}
+	return ERROR_SYSTEM_ERROR;
 }
 
 ////////////////////////////////
