@@ -17,11 +17,11 @@ public:
 	bool setRoleInfo(ROLESINFO * roleInfo);                    //选择英雄
 
 	bool setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot);       //设置角色身份
+	bool setRoleCurState(uint16_t state);                         //设置角色当前状态
 	bool drowCards(CLICARDS *cards, uint16_t card_count);         //得到手牌
 
 	bool playerBloodAdd(uint16_t n = 1);                          //英雄加体力
 	bool playerBloodReduce(uint16_t n = 1);                       //英雄减体力
-	bool isplayerAlive();                                         //英雄是否存活
 
 	CLICARDS* playCards(uint16_t index);                          //出牌
 	CLICARDS* playCards(string name);
@@ -30,6 +30,8 @@ public:
 	CLICARDS* discardCards(uint16_t index);                       //弃手牌
 	CLICARDS* discardCards(string name);
 	CLICARDS* discardCards(uint32_t id);
+
+	bool judgementCard(CLICARDS *card);
 
 	CLICARDS* discardEquipCards(uint16_t index);                  //弃装备牌
 	CLICARDS* discardEquipCards(uint8_t category);                //弃装备牌
@@ -41,6 +43,7 @@ public:
 	PLAYERINFO * playerInfo();
 
 	bool isRoleRobot();                                           //是不是机器人
+	bool isRoleAlive();                                           //英雄是否存活
 	bool isCardCanPlay(uint32_t id);
 	bool isCardCanEquip(uint32_t id);
 	bool isCardCanEquip(uint16_t index);
@@ -61,10 +64,13 @@ public:
 	uint16_t cardEquipNum();                                      //装备牌数
 	uint16_t cardJudgeNum();                                      //判定牌数
 	CLICARDS* equipWeapon();                                      //装备武器
+	uint16_t roleCurState();
+	uint16_t roleCurBlood();
 
 	uint32_t curCardId(uint16_t index);                           //第index手牌的ID
 	int curCardIndex(string name);                                //名字为name牌的位置
 	int curCardIndex(uint32_t id);                                //ID为id牌的位置
+	CLICARDS* judgeCardByIndex(uint16_t index);                   //第index判定牌
 
 	//未实现
 	bool useRoleSkill(uint16_t index);

@@ -1,5 +1,6 @@
 #include "common.h"
 #include <string>
+#include <cstdlib>
 #include <windows.h>
 
 uint16_t strToArray(const char *source, uint16_t *array) {
@@ -29,6 +30,9 @@ int strToInt(string source) {
 	
 	for (size_t i = 0; i < source_len; i++) {
 		if (source[i] >= '0' && source[i] <= '9') {
+			if (num == -1) {
+				num = 0;
+			}
 			num = num * 10 + source[i] - '0';
 		}
 	}
@@ -64,26 +68,56 @@ std::string UTF8_To_string(const std::string & str)
 
 string viewCardColor(int point, uint16_t color) {
 	string card_color;
-	char buff[8];
+	char buff[16];
 	switch (color)
 	{
-	case 0:
+	case CARDS_COLOR_SPADE:
 		card_color = "黑桃  ";
 		break;
-	case 1:
+	case CARDS_COLOR_PLUM:
 		card_color = "梅花  ";
 		break;
-	case 2:
+	case CARDS_COLOR_HEART:
 		card_color = "红桃  ";
 		break;
-	case 3:
+	case CARDS_COLOR_DIAMOND:
 		card_color = "方块  ";
 		break;
 	default:
 		card_color = "花色有误";
-		return card_color;
+		break;
 	}
-	card_color += _itoa_s(point, buff, 10);
+
+	switch (point)
+	{
+	case 1:
+		strncpy_s(buff, "A", sizeof(char));
+		break;
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+	case 10:
+		_itoa_s(point, buff, 10);
+		break;
+	case 11:
+		strncpy_s(buff, "J", sizeof("J"));
+		break;
+	case 12:
+		strncpy_s(buff, "Q", sizeof("Q"));
+		break;
+	case 13:
+		strncpy_s(buff, "K", sizeof("K"));
+		break;
+	default:
+		strncpy_s(buff, "点数有误", sizeof("点数有误"));
+		break;
+	}
+	card_color += buff;
 	return card_color;
 }
 

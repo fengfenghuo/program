@@ -14,11 +14,19 @@ public:
 	int generateStatus(uint16_t role_count);
 	bool generateRoles();
 	bool shuffleCards();
-	bool dealCards(uint16_t cards_count, CLICARDS * cards);
+	bool dealCards(uint16_t cards_count, uint16_t role_num);
+	bool dealCards(uint16_t cards_count, CLICARDS *cards);
+	bool judgeCards(uint16_t role_num);
+	CLICARDS * playCards(uint16_t role_num);
+	CLICARDS * discardCards(uint16_t role_num);
+	bool playerStartToPlay(uint16_t role_num);
+	bool playerEndToPlay(uint16_t role_num);
 	int applyCardPlay(CLICARDS *card, uint16_t role_num);
 	PLAYERINFO* findPlayerInfoByNum(uint16_t role_num);
 	uint16_t roleAliveNum();
-
+	bool startingCards();
+	//////////////////////////////////////////
+	uint16_t curRoleCount();
 	//////////////////////////////////////////
 	//Ñ¡ÔñÄ¿±ê
 	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon);
@@ -34,9 +42,11 @@ public:
 	void viewPlayersStatus();
 	void viewRoleInfo(ROLESINFO * role);
 	void viewPlayersRole();
+	void viewPlayerCards(uint16_t role_num);
 
 private:
 	uint16_t m_roleCount;
+	uint16_t m_role_cur_count;
 	PlayerData *m_players;
 	uint16_t m_cards_count;
 	CLICARDS m_piles_cards[CARDS_TOTAL];

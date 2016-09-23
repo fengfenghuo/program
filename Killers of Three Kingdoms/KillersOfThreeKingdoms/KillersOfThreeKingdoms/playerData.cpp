@@ -6,6 +6,7 @@
 #include <cmath>
 
 PlayerData::PlayerData() {
+	m_playerInfo.is_alive = true;
 	m_playerInfo.role_id = 0; 
 	m_playerInfo.max_blood = 0;
 	m_playerInfo.cur_blood = 0;
@@ -70,6 +71,13 @@ void PlayerData::viewRoleCard() {
 	ROLESINFO * roleInfo = role_man.findRoleById(m_playerInfo.role_id);
 
 	if (roleInfo != NULL) {
+		cout << "武将名：   " << m_playerInfo.role_name << endl;
+		if (m_playerInfo.status == STATUS_MASTER) {
+			cout << "身  份：   " << viewRoleStatus(m_playerInfo.status) << endl;
+		}
+		else if (!isRoleRobot()) {
+			cout << "你的身份：  " << viewRoleStatus(m_playerInfo.status) << endl;
+		}
 		cout << "武将名：   " << m_playerInfo.role_name << endl;
 		cout << "武将上限体力：  " << m_playerInfo.max_blood << endl;
 		cout << "武将当前体力：  " << m_playerInfo.cur_blood << endl;
@@ -143,13 +151,28 @@ bool  PlayerData::setRoleInfo(ROLESINFO * roleInfo) {
 }
 
 bool PlayerData::setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot) {
-	if (m_playerInfo.status == 0 && status >= STATUS_MASTER && status <= STATUS_REBEL) {
+	if (m_playerInfo.status == 0 && status >= STATUS_MASTER && status <= STATUS_NUM) {
 		m_playerInfo.status = status;
 		m_playerInfo.role_num = role_num;
 		m_playerInfo.is_robot = isRobot;
 		return true;
 	}
 	return false;
+}
+
+bool PlayerData::setRoleCurState(uint16_t state) {
+	if (state >= GAME_STAGE_END && state <= GAME_STAGE_DISCARDS) {
+		m_playerInfo.cur_state = state;
+	}
+	return false;
+}
+
+uint16_t PlayerData::roleCurState() {
+	return m_playerInfo.cur_state;
+}
+
+uint16_t PlayerData::roleCurBlood() {
+	return m_playerInfo.cur_blood;
 }
 
 bool PlayerData::isCardCanPlay(uint32_t id) {
@@ -321,6 +344,16 @@ bool PlayerData::equipCards(CLICARDS *card) {
 	return true;
 }
 
+bool PlayerData::judgementCard(CLICARDS *card) {
+	if (card == NULL) {
+		cout << "No this card" << endl;
+		return false;
+	}
+
+	memcpy(&m_playerInfo.judgment_cards[m_playerInfo.judgment_num++], card, sizeof(CLICARDS));
+	return true;
+}
+
 bool PlayerData::playerBloodAdd(uint16_t n) {
 	if (m_playerInfo.cur_blood >= m_playerInfo.max_blood){
 		return false;
@@ -343,6 +376,10 @@ bool PlayerData::playerBloodReduce(uint16_t n){
 
 bool PlayerData::isRoleRobot() {
 	return m_playerInfo.is_robot;
+}
+
+bool PlayerData::isRoleAlive() {
+	return m_playerInfo.is_alive;
 }
 
 bool PlayerData::isHorsePlus() {
@@ -385,7 +422,7 @@ uint16_t PlayerData::playerRoleStatus() {
 }
 
 uint16_t PlayerData::damageRange() {
-	return weaponRange() + (isHorseMinus() ? 1 : 0);
+	return 1 + weaponRange() + (isHorseMinus() ? 1 : 0);
 }
 
 bool PlayerData::isCard_Sha() {
@@ -431,6 +468,14 @@ int PlayerData::curCardIndex(uint32_t id) {
 	return ERROR_SYSTEM_ERROR;
 }
 
+CLICARDS* PlayerData::judgeCardByIndex(uint16_t index) {
+	if (index >= m_playerInfo.judgment_num) {
+		return NULL;
+	}
+
+	return &m_playerInfo.judgment_cards[index];
+}
+
 bool PlayerData::isCurCardEmpty(){
 	return m_playerInfo.cards_num == 0 ? true : false;
 }
@@ -463,10 +508,6 @@ CLICARDS* PlayerData::equipWeapon() {
 		}
 	}
 	return NULL;
-}
-
-bool PlayerData::isplayerAlive() {
-	return m_playerInfo.cur_blood == 0 ? false : true;
 }
 
 CLICARDS* PlayerData::discardEquipCards(uint8_t category) {

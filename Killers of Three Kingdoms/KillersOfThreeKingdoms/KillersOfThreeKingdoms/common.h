@@ -16,6 +16,7 @@ using namespace std;
 #define CARDS_MAX_NUM 99
 #define SKILL_NUM 2
 #define CARDS_DEALS 2
+#define CARDS_STARTING 4
 
 #define CARDS_TOTAL 108
 #define ROLES_TOTAL 27
