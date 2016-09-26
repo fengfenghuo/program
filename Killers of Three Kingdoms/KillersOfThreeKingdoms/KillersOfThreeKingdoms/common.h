@@ -5,9 +5,11 @@ using namespace std;
 
 ///////////////ERROR//////////////////
 #define ERROR_SYSTEM_ERROR -1
+#define ERROR_TARGET_DEAD 98
 #define ERROR_TARGET_ERROR 99
 #define ERROR_NO_RESPONSE -2
 #define ERROR_NO_ACTIVE -3
+
 /////////////////////////////////
 
 #define CARDS_NUM 16

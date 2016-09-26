@@ -64,29 +64,43 @@ int main() {
 		gameData.viewPlayerCards(player_num);
 
 		cout << "ÓÎÏ·¿ªÊ¼~" << endl;
-		
-		for (uint16_t i = 0; i < gameData.curRoleCount(); i++) {
-			gameData.playerStartToPlay(i);
-			if (!gameData.judgeCards(i)) {
-				cout << "¡¾" << i << "¡¿ºÅÎ»ÅÐ¶¨ÅÆ´íÎó" << endl;
-				return ERROR_SYSTEM_ERROR;
-			}
-
-			if (!gameData.dealCards(CARDS_DEALS, i)) {
-				cout << "¡¾" << i << "¡¿ºÅÎ»×¥ÅÆ´íÎó" << endl;
-				return ERROR_SYSTEM_ERROR;
-			}
-
-			while (CLICARDS * cards = gameData.playCards(i)) {
-				int signal = gameData.applyCardPlay(cards, i);
-				if (signal != 0) {
-					cout << "¡¾" << i << "¡¿ºÅÎ»³öÅÆ´íÎó" << endl;
+		while (!gameData.endingCondition(player_num)) {
+			for (uint16_t i = 0; i < gameData.curRoleCount(); i++) {
+				gameData.playerStartToPlay(i);
+				int judge = gameData.judgeCards(i);
+				if (judge < 0) {
+					cout << "¡¾" << i << "¡¿ºÅÎ»ÅÐ¶¨ÅÆ´íÎó" << endl;
 					return ERROR_SYSTEM_ERROR;
 				}
-			}
 
-			gameData.discardCards(i);
-			gameData.playerEndToPlay(i);
+				if (judge == ERROR_TARGET_DEAD && gameData.endingCondition(player_num)) {
+					break;
+				}
+
+				if (!gameData.dealCards(CARDS_DEALS, i)) {
+					cout << "¡¾" << i << "¡¿ºÅÎ»×¥ÅÆ´íÎó" << endl;
+					return ERROR_SYSTEM_ERROR;
+				}
+
+				int signal = 0;
+				while (CLICARDS * cards = gameData.playCards(i)) {
+					signal = gameData.applyCardPlay(cards, i);
+					if (signal < 0) {
+						cout << "¡¾" << i << "¡¿ºÅÎ»³öÅÆ´íÎó" << endl;
+						return ERROR_SYSTEM_ERROR;
+					}
+					if (signal == ERROR_TARGET_DEAD && gameData.endingCondition(player_num)) {
+						break;
+					}
+				}
+
+				if (signal == ERROR_TARGET_DEAD && gameData.endingCondition(player_num)) {
+					break;
+				}
+
+				gameData.discardCards(i);
+				gameData.playerEndToPlay(i);
+			}
 		}
 	}
 	

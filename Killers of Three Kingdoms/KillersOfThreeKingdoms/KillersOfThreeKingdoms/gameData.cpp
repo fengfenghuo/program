@@ -53,7 +53,7 @@ void GameData::viewRoleInfo(ROLESINFO * role) {
 	cout << setiosflags(ios::left) << setw(5) << "名字：" << setw(8) << role->name;
 	cout << setiosflags(ios::left) << setw(5) << "  体力：" << setw(3) << role->blood;
 	cout << setiosflags(ios::left) << setw(5) << "  势力：" << setw(3) << role->power << endl;
-	
+
 	for (uint16_t i = 0; i < role->skill_num; i++) {
 		cout << setiosflags(ios::left) << setw(5) << "技能：" << i + 1;
 		cout << role->skill[i] << endl;
@@ -179,7 +179,7 @@ bool GameData::generateRoles() {
 	uint16_t role_count = role_man.count();
 	for (uint16_t i = 0; i < m_roleCount * ROLES_CHOOSE_NUM; i++) {
 		uint16_t num = rand() % role_count + 1;
-		while (roles[num-1] == 1) {
+		while (roles[num - 1] == 1) {
 			num = rand() % role_count + 1;
 		}
 		roles_identity[i] = num;
@@ -350,6 +350,8 @@ CLICARDS * GameData::playCards(uint16_t role_num) {
 		string in_str;
 		while (true) {
 			m_players[role_num].viewCurCards(true);
+			m_players[role_num].viewEquipCards(false);
+			m_players[role_num].viewJudgementCards(false);
 			cout << "[99]. 不出牌" << endl;
 			cout << "你的出牌时间，请选择要出的牌：";
 			cin >> in_str;
@@ -357,13 +359,13 @@ CLICARDS * GameData::playCards(uint16_t role_num) {
 			if (index >= 0 && index < ERROR_TARGET_ERROR) {
 				return m_players[role_num].playCards((uint16_t)index);
 			}
-			else if(index == ERROR_TARGET_ERROR){
+			else if (index == ERROR_TARGET_ERROR) {
 				m_players[role_num].setRoleCurState(GAME_STAGE_DISCARDS);
 				break;
 			}
 			else {
 				int num = m_players[role_num].curCardIndex(in_str);
-			    if(num >= 0){
+				if (num >= 0) {
 					return m_players[role_num].playCards((uint16_t)num);
 				}
 				cout << "输入错误，请重新输入~" << endl;
@@ -376,6 +378,10 @@ CLICARDS * GameData::playCards(uint16_t role_num) {
 CLICARDS * GameData::discardCards(uint16_t role_num) {
 	if (m_players[role_num].isRoleRobot()) {
 		//robot
+		int i = m_players[role_num].cardCurNum();
+		while (m_players[role_num].cardCurNum() > m_players[role_num].roleCurBlood()) {
+			m_players[role_num].discardCards((uint16_t)--i);
+		}
 	}
 	else {
 		string in_str;
@@ -397,57 +403,56 @@ CLICARDS * GameData::discardCards(uint16_t role_num) {
 	return NULL;
 }
 
-bool GameData::judgeCards(uint16_t role_num) {
+int GameData::judgeCards(uint16_t role_num) {
 	m_players[role_num].setRoleCurState(GAME_STAGE_PLAY);
 
 	if (m_players[role_num].isJudgeCardEmpty()) {
-		return true;
+		return 0;
 	}
 
 	for (uint16_t j = 0; j < m_players[role_num].cardJudgeNum(); j++) {
 		CLICARDS * judge_card = m_players[role_num].judgeCardByIndex(j);
 		if (judge_card == NULL) {
 			cout << "没找的这个判定牌！~" << endl;
-			return false;
+			return ERROR_SYSTEM_ERROR;
 		}
 
 		CLICARDS cards[ROLES_MAX_NUM] = { 0 };
 		if (!dealCards(1, cards)) {
 			cout << "判牌出错了~" << endl;
-			return false;
+			return ERROR_SYSTEM_ERROR;
 		}
+
+		m_players[role_num].discardJudgementCards(j);
 
 		if (judge_card->id == CARD_SHANDIAN) {
 			if (cards[0].color == CARDS_COLOR_SPADE && cards[0].points >= 2 && cards[0].points <= 9) {
 				cout << m_players[role_num].playerRoleName() << " 判定【闪电】 成立" << endl;
-				if (m_players[role_num].playerBloodReduce(judge_card->hurt)) {
-					cout << m_players[role_num].playerRoleName() << "扣血失败了" << endl;
-					return false;
-				}
-				cout << m_players[role_num].playerRoleName() << " 判定【闪电】 不成立" << endl;
-				int i = 0;
-				if (role_num + 1 < m_roleCount) {
-					i = role_num + 1;
-				}
-				while (!m_players[i].isRoleAlive()) {
-					i++;
-				}
-				m_players[i].judgementCard(judge_card);
-				return true;
+				return playerBloodReduce(role_num);
 			}
+			cout << m_players[role_num].playerRoleName() << " 判定【闪电】 不成立" << endl;
+			int i = 0;
+			if (role_num + 1 < m_roleCount) {
+				i = role_num + 1;
+			}
+			while (!m_players[i].isRoleAlive()) {
+				i++;
+			}
+			m_players[i].judgementCard(judge_card);
+			return 0;
 		}
 
 		if (judge_card->id == CARD_LEBUSISHU) {
 			if (cards[0].color == CARDS_COLOR_HEART) {
 				cout << m_players[role_num].playerRoleName() << " 判定【乐不思蜀】 不成立" << endl;
-				return true;
+				return 0;
 			}
 			cout << m_players[role_num].playerRoleName() << " 判定【乐不思蜀】 成立，跳过出牌阶段" << endl;
 			m_players[role_num].setRoleCurState(GAME_STAGE_DISCARDS);
-			return true;
+			return 0;
 		}
 	}
-	return true;
+	return 0;
 }
 
 uint16_t GameData::roleAliveNum() {
@@ -480,6 +485,91 @@ bool GameData::startingCards() {
 	return true;
 }
 
+bool GameData::endingCondition(uint16_t role_num) {
+	bool rebel_alive = false;
+	bool guilty_alive = false;
+	for (uint16_t i = 1; i < m_roleCount; i++) {
+		if (m_players[i].playerRoleStatus() == STATUS_REBEL && m_players[i].isRoleAlive()) {
+			rebel_alive = true;
+		}
+		if (m_players[i].playerRoleStatus() == STATUS_GUILTY && m_players[i].isRoleAlive()) {
+			guilty_alive = true;
+		}
+	}
+
+	if (m_players[0].isRoleAlive()) {
+		if (rebel_alive || guilty_alive) {
+			return false;
+		}
+
+		cout << "主公获得胜利~" << endl;
+		if (m_players[role_num].playerRoleStatus() == STATUS_MASTER || m_players[role_num].playerRoleStatus() == STATUS_LOYAL) {
+			cout << "恭喜！！！你的阵营赢得了胜利！！！" << endl;
+		}
+		else {
+			cout << "很遗憾！！！你的阵营输了，再接再励！！！" << endl;
+		}
+		return true;
+	}
+	else {
+		if (rebel_alive) {
+			cout << "反贼获得胜利~" << endl;
+			if (m_players[role_num].playerRoleStatus() == STATUS_MASTER || m_players[role_num].playerRoleStatus() == STATUS_LOYAL) {
+				cout << "很遗憾！！！你的阵营输了，再接再励！！！" << endl;
+			}
+			else {
+				cout << "恭喜！！！你的阵营赢得了胜利！！！" << endl;
+			}
+			return true;
+		}
+
+		if (guilty_alive && !rebel_alive) {
+			cout << "内奸获得胜利~" << endl;
+			if (m_players[role_num].playerRoleStatus() == STATUS_GUILTY) {
+				cout << "恭喜！！！你的阵营赢得了胜利！！！" << endl;
+			}
+			else {
+				cout << "很遗憾！！！你的阵营输了，再接再励！！！" << endl;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+int GameData::playerBloodReduce(uint16_t role_num) {
+	if (!m_players[role_num].playerBloodReduce()) {
+		cout << "扣体力出错了" << endl;
+		return ERROR_SYSTEM_ERROR;
+	}
+
+	if (m_players[role_num].roleCurBlood() == 0) {
+		cout << m_players[role_num].playerRoleName() << "  濒死~，求【桃】~" << endl;
+		for (uint16_t i = 0; i < m_role_cur_count; i++) {
+			if (i == role_num) continue;
+			if (m_players[i].isRoleRobot()) {
+				//robot
+				m_players[role_num].setRoleAlive();
+				return ERROR_TARGET_DEAD;
+			}
+			else {
+				cout << m_players[role_num].playerRoleName() << "  濒死~，向您求【桃】~，是否出【桃】？" << endl;
+				int index = applyPlayCard(CARD_TAO, i);
+				if (index >= 0) {
+					cout << m_players[i].playerRoleName() << "（你）出了张【桃】~" << endl;
+					m_players[role_num].playerBloodAdd();
+					m_players[i].discardCards((uint16_t)index);
+				}
+				else {
+					m_players[role_num].setRoleAlive();
+					return ERROR_TARGET_DEAD;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 	if (card == NULL) {
 		return ERROR_SYSTEM_ERROR;
@@ -508,10 +598,7 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 				}
 				else {
 					cout << m_players[role].playerRoleName() << "没有响应【杀】~~" << endl;
-					if (m_players[role].playerBloodReduce()) {
-						return 0;
-					}
-					return ERROR_SYSTEM_ERROR;
+					return playerBloodReduce(role);
 				}
 			}
 			break;
@@ -572,7 +659,7 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 				if (applyCardRemove(CARD_SHUNSHOUQIANYANG, role_num, (uint16_t)role) == 0) {
 					return 0;
 				}
-				else if(role < 0){
+				else if (role < 0) {
 					cout << "没有【顺手牵羊】的目标~gg" << endl;
 					return 0;
 				}
@@ -598,12 +685,10 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 
 				int index = applyCardDuel(role_num, role);
 				if (index = ERROR_NO_RESPONSE) {
-					m_players[role].playerBloodReduce();
-					return 0;
+					return playerBloodReduce(role);
 				}
 				else if (index = ERROR_NO_ACTIVE) {
-					m_players[role_num].playerBloodReduce();
-					return 0;
+					return playerBloodReduce(role_num);
 				}
 				else {
 					return ERROR_SYSTEM_ERROR;
@@ -662,25 +747,22 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 
 				if (applyDamage(CARD_SHA, role_source, role_target) != 0) {
 					cout << m_players[role_target].playerRoleName() << "没有响应【杀】~~" << endl;
-					if (m_players[role_target].playerBloodReduce()) {
-						return 0;
-					}
-					return ERROR_SYSTEM_ERROR;
+					return playerBloodReduce(role_target);
 				}
 				return 0;
 			}
 			break;
 		}
 		case CARD_WUZHONGSHENGYOU: {
-			CLICARDS card[CARDS_DEALS] = {0};
+			CLICARDS card[CARDS_DEALS] = { 0 };
 			if (!dealCards(CARDS_DEALS, role_num)) {
 				cout << "发牌也会出错？" << endl;
 				return ERROR_SYSTEM_ERROR;
 			}
-			
+
 			return 0;
 		}
-		case CARD_WANGJIANQIFA: 
+		case CARD_WANGJIANQIFA:
 		case CARD_NANMANRUQIN: {
 			if (applyDamageAll(card->id, role_num) != 0) {
 				return ERROR_SYSTEM_ERROR;
@@ -738,7 +820,7 @@ int GameData::applyCardPlay(CLICARDS *card, uint16_t role_num) {
 			return 0;
 		}
 	}
-	else if (card->category == CARDS_CATEGORY_EQUIPMENT_WEAPON 
+	else if (card->category == CARDS_CATEGORY_EQUIPMENT_WEAPON
 		|| card->category == CARDS_CATEGORY_EQUIPMENT_ARMOR
 		|| card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_PLUS
 		|| card->category == CARDS_CATEGORY_EQUIPMENT_HORSE_MINUS) {
@@ -823,7 +905,7 @@ int GameData::applyDamage(uint32_t card_id, uint16_t source_num, uint16_t target
 	}
 
 	if (index >= 0) {
-		cout << m_players[source_num].playerRoleName() << "  出了【闪】~" << endl;
+		//cout << m_players[target_num].playerRoleName() << "  出了【闪】~" << endl;
 		m_players[target_num].discardCards((uint16_t)index);
 		return 0;
 	}
@@ -858,7 +940,7 @@ int GameData::applyDamageAll(uint32_t card_id, uint16_t source_num) {
 		else {
 			if (card_id == CARD_WANGJIANQIFA) {
 				if (!m_players[i].isCard_Shan()) {
-					m_players[i].playerBloodReduce();
+					return playerBloodReduce(i);
 				}
 				else {
 					m_players[i].discardCards((uint32_t)CARD_SHAN);
@@ -866,7 +948,7 @@ int GameData::applyDamageAll(uint32_t card_id, uint16_t source_num) {
 			}
 			else if (card_id == CARD_NANMANRUQIN) {
 				if (!m_players[i].isCard_Sha()) {
-					m_players[i].playerBloodReduce();
+					return playerBloodReduce(i);
 				}
 				else {
 					m_players[i].discardCards((uint32_t)CARD_SHA);
@@ -874,7 +956,7 @@ int GameData::applyDamageAll(uint32_t card_id, uint16_t source_num) {
 			}
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -1021,12 +1103,12 @@ int GameData::applyCardDuel(uint16_t source_num, uint16_t target_num) {
 	}
 
 	if (m_players[target_num].isCard_Sha() && !m_players[source_num].isCard_Sha()) {
-		cout << m_players[target_num].playerRoleName() << "不再响应出【杀】！" << endl;
+		cout << m_players[source_num].playerRoleName() << "不再响应出【杀】！" << endl;
 		return ERROR_NO_ACTIVE;
 	}
 
 	if (!m_players[target_num].isCard_Sha() && m_players[source_num].isCard_Sha()) {
-		cout << m_players[source_num].playerRoleName() << "不再响应出【杀】！" << endl;
+		cout << m_players[target_num].playerRoleName() << "不再响应出【杀】！" << endl;
 		return ERROR_NO_RESPONSE;
 	}
 	return ERROR_SYSTEM_ERROR;

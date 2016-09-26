@@ -16,7 +16,7 @@ public:
 	bool shuffleCards();
 	bool dealCards(uint16_t cards_count, uint16_t role_num);
 	bool dealCards(uint16_t cards_count, CLICARDS *cards);
-	bool judgeCards(uint16_t role_num);
+	int judgeCards(uint16_t role_num);
 	CLICARDS * playCards(uint16_t role_num);
 	CLICARDS * discardCards(uint16_t role_num);
 	bool playerStartToPlay(uint16_t role_num);
@@ -25,6 +25,9 @@ public:
 	PLAYERINFO* findPlayerInfoByNum(uint16_t role_num);
 	uint16_t roleAliveNum();
 	bool startingCards();
+	bool endingCondition(uint16_t role_num);
+
+	int playerBloodReduce(uint16_t role_num);
 	//////////////////////////////////////////
 	uint16_t curRoleCount();
 	//////////////////////////////////////////

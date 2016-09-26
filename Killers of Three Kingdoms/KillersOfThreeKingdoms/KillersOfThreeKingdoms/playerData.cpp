@@ -38,9 +38,11 @@ void PlayerData::viewCurCards(bool isShow, uint16_t start) {
 			cout << "[" << i + start << "]  " << m_playerInfo.cur_cards[i].name << "(" << viewCardColor(m_playerInfo.cur_cards[i].points, m_playerInfo.cur_cards[i].color) << ")" << endl;
 		}
 	}
+	cout << endl;
 }
 
 void PlayerData::viewEquipCards(bool isShow, uint16_t start) {
+	cout << "装备区：" << endl;
 	if (m_playerInfo.equip_num == 0) {
 		if (isShow) {
 			cout << "无装备牌" << endl;
@@ -51,9 +53,11 @@ void PlayerData::viewEquipCards(bool isShow, uint16_t start) {
 			cout << "[" << i + start << "]  " << m_playerInfo.equip_cards[i].name << "(" << viewCardColor(m_playerInfo.equip_cards[i].points, m_playerInfo.equip_cards[i].color) << ")" << endl;
 		}
 	}
+	cout << endl;
 }
 
 void PlayerData::viewJudgementCards(bool isShow, uint16_t start){
+	cout << "判定区：" << endl;
 	if (m_playerInfo.judgment_num == 0) {
 		if (isShow) {
 			cout << "无需判定的牌" << endl;
@@ -64,6 +68,7 @@ void PlayerData::viewJudgementCards(bool isShow, uint16_t start){
 			cout << "[" << i + start << "]  " << m_playerInfo.judgment_cards[i].name << "(" << viewCardColor(m_playerInfo.judgment_cards[i].points, m_playerInfo.judgment_cards[i].color) << ")" << endl;
 		}
 	}
+	cout << endl;
 }
 
 void PlayerData::viewRoleCard() {
@@ -165,6 +170,14 @@ bool PlayerData::setRoleCurState(uint16_t state) {
 		m_playerInfo.cur_state = state;
 	}
 	return false;
+}
+
+bool PlayerData::setRoleAlive() {
+	if (m_playerInfo.cur_blood != 0) {
+		return false;
+	}
+	m_playerInfo.is_alive = false;
+	return true;
 }
 
 uint16_t PlayerData::roleCurState() {
@@ -443,6 +456,15 @@ bool PlayerData::isCard_Shan(){
 	return false;
 }
 
+bool PlayerData::isCard_Tao() {
+	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
+		if (m_playerInfo.cur_cards[i].id == CARD_TAO) {
+			return true;
+		}
+	}
+	return false;
+}
+
 uint32_t PlayerData::curCardId(uint16_t index) {
 	if (index >= m_playerInfo.cards_num) {
 		return 0;
@@ -567,7 +589,7 @@ CLICARDS* PlayerData::putOneCardByIndex(uint16_t index) {
 	}
 	m_playerInfo.cards_num--;
 
-	cout << playerRoleName() << "出了" << "【" << card->name << "】" << endl;
+	cout << playerRoleName() << "  打出" << "【" << card->name << "】" << endl;
 	return card;
 }
 
