@@ -1305,7 +1305,7 @@ int GameData::applyEquipment(uint32_t card_id, uint16_t role_num, uint16_t targe
 	}
 
 	if (card_id == CARD_GUANSHIFU) {
-		if (m_players[role_num].isRoleRobot) {
+		if (m_players[role_num].isRoleRobot()) {
 			return 0;
 		}
 		cout << "是否发动【贯石斧】技能，选择弃两张牌，使对方受到一点伤害？(Y/N):";
