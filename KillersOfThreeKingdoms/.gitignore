@@ -1,7 +1,4 @@
 *.class
-*.exe
-*.ilk
-*.pdb
 *.tlog
 *.las
 *.log
@@ -9,3 +6,5 @@
 *.idb
 *.opendb
 *.db
+*.vcxproj
+.vs/
