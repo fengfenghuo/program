@@ -47,6 +47,7 @@ ROLESINFO * rolesInfoManagement::at(uint32_t index) {
 			rolesInfo->identity = temp_value.isMember("identity") ? temp_value["identity"].asUInt() : 0;
 			rolesInfo->name = temp_value.isMember("name") ? UTF8_To_string(temp_value["name"].asString().c_str()) : 0;
 			rolesInfo->blood = temp_value.isMember("blood") ? temp_value["blood"].asUInt() : 0;
+			rolesInfo->sex = temp_value.isMember("sex") ? temp_value["sex"].asBool() : 1;
 			rolesInfo->power = temp_value.isMember("power") ? UTF8_To_string(temp_value["power"].asString().c_str()) : 0;
 
 			if (temp_value.isMember("skill1")) {

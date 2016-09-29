@@ -18,7 +18,7 @@ public:
 	bool setRoleAlive();                                       //选择英雄
 
 	bool setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot);       //设置角色身份
-	bool setRoleCurState(uint16_t state);                         //设置角色当前状态
+	bool setRoleCurState(uint16_t state, bool is_play_sha = true);              //设置角色当前状态
 	bool drowCards(CLICARDS *cards, uint16_t card_count);         //得到手牌
 
 	bool playerBloodAdd(uint16_t n = 1);                          //英雄加体力
@@ -66,8 +66,10 @@ public:
 	uint16_t cardEquipNum();                                      //装备牌数
 	uint16_t cardJudgeNum();                                      //判定牌数
 	CLICARDS* equipWeapon();                                      //装备武器
+	CLICARDS* equipArmor();                                       //装备防具
 	uint16_t roleCurState();
 	uint16_t roleCurBlood();
+	bool roleSex();
 
 	uint32_t curCardId(uint16_t index);                           //第index手牌的ID
 	int curCardIndex(string name);                                //名字为name牌的位置

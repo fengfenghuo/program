@@ -150,6 +150,7 @@ bool  PlayerData::setRoleInfo(ROLESINFO * roleInfo) {
 		m_playerInfo.role_id = roleInfo->id;
 		m_playerInfo.role_name = roleInfo->name;
 		m_playerInfo.role_power = roleInfo->power;
+		m_playerInfo.sex = roleInfo->sex;
 		return true;
 	}
 	return false;
@@ -165,9 +166,10 @@ bool PlayerData::setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot)
 	return false;
 }
 
-bool PlayerData::setRoleCurState(uint16_t state) {
+bool PlayerData::setRoleCurState(uint16_t state, bool is_play_sha) {
 	if (state >= GAME_STAGE_END && state <= GAME_STAGE_DISCARDS) {
 		m_playerInfo.cur_state = state;
+		m_playerInfo.cur_state = is_play_sha;
 	}
 	return false;
 }
@@ -186,6 +188,10 @@ uint16_t PlayerData::roleCurState() {
 
 uint16_t PlayerData::roleCurBlood() {
 	return m_playerInfo.cur_blood;
+}
+
+bool PlayerData::roleSex() {
+	return m_playerInfo.sex;
 }
 
 bool PlayerData::isCardCanPlay(uint32_t id) {
@@ -354,6 +360,7 @@ bool PlayerData::equipCards(CLICARDS *card) {
 		discardEquipCards(card->category);
 	}
 	memcpy(&m_playerInfo.equip_cards[m_playerInfo.equip_num++], card, sizeof(CLICARDS));
+	cout << m_playerInfo.role_name << "装备了【" << card->name << "】" << endl;
 	return true;
 }
 
@@ -532,6 +539,16 @@ CLICARDS* PlayerData::equipWeapon() {
 	return NULL;
 }
 
+CLICARDS* PlayerData::equipArmor() {
+	for (uint16_t i = 0; i < m_playerInfo.equip_num; i++) {
+		if (m_playerInfo.equip_cards[i].category == CARDS_CATEGORY_EQUIPMENT_ARMOR) {
+			CLICARDS* armor = &m_playerInfo.equip_cards[i];
+			return armor;
+		}
+	}
+	return NULL;
+}
+
 CLICARDS* PlayerData::discardEquipCards(uint8_t category) {
 	for (uint16_t i = 0; i < m_playerInfo.equip_num; i++) {
 		if (m_playerInfo.equip_cards[i].category == category) {
@@ -589,7 +606,7 @@ CLICARDS* PlayerData::putOneCardByIndex(uint16_t index) {
 	}
 	m_playerInfo.cards_num--;
 
-	cout << playerRoleName() << "  打出" << "【" << card->name << "】" << endl;
+	//cout << playerRoleName() << "  打出" << "【" << card->name << "】" << endl;
 	return card;
 }
 

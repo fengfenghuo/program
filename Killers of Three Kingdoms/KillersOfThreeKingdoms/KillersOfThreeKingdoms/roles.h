@@ -7,6 +7,7 @@ typedef struct roles_info{
 	uint16_t identity;
 	uint16_t blood;
 	string name;
+	bool sex;
 	string power;
 	uint16_t skill_num;
 	string skill[SKILL_NUM];
@@ -16,11 +17,13 @@ typedef struct player {
 	uint16_t role_num;
 	bool is_robot;
 	bool is_alive;
+	bool is_play_sha;
 	uint16_t status;
 	uint32_t role_id;
 	uint16_t max_blood;
 	uint16_t cur_blood;
 	string role_name;
+	bool sex;
 	string role_power;
 	uint16_t cur_state;
 	uint16_t max_cards;

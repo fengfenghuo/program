@@ -5,6 +5,7 @@ using namespace std;
 
 ///////////////ERROR//////////////////
 #define ERROR_SYSTEM_ERROR -1
+#define ERROR_USE_WEAPEN 97
 #define ERROR_TARGET_DEAD 98
 #define ERROR_TARGET_ERROR 99
 #define ERROR_NO_RESPONSE -2
@@ -84,8 +85,12 @@ using namespace std;
 
 
 uint16_t strToArray(const char *source, uint16_t *array);
+bool arrIsInArray(uint16_t arr, uint16_t* array, uint16_t array_count);
+bool arrIsInArray(uint16_t* arr, uint16_t arr_count, uint16_t* array, uint16_t array_count);
 int strToInt(string source);
 string viewCardColor(int point, uint16_t color);
 string viewRoleStatus(uint16_t status);
+
+bool isLaunchSkill();
 
 std::string UTF8_To_string(const std::string & str);

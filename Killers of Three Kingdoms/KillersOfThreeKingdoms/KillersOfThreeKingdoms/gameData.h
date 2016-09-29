@@ -11,34 +11,40 @@ public:
 	~GameData();
 
 	bool setRoleCount(uint16_t role_count);
+	int playerBloodReduce(uint16_t role_num);
+
 	int generateStatus(uint16_t role_count);
 	bool generateRoles();
 	bool shuffleCards();
 	bool dealCards(uint16_t cards_count, uint16_t role_num);
 	bool dealCards(uint16_t cards_count, CLICARDS *cards);
 	int judgeCards(uint16_t role_num);
+
 	CLICARDS * playCards(uint16_t role_num);
-	CLICARDS * discardCards(uint16_t role_num);
+	int discardCards(uint16_t role_num);
+	int discardCards(uint16_t role_num, uint16_t card_num);
+
 	bool playerStartToPlay(uint16_t role_num);
 	bool playerEndToPlay(uint16_t role_num);
 	int applyCardPlay(CLICARDS *card, uint16_t role_num);
-	PLAYERINFO* findPlayerInfoByNum(uint16_t role_num);
-	uint16_t roleAliveNum();
 	bool startingCards();
 	bool endingCondition(uint16_t role_num);
-
-	int playerBloodReduce(uint16_t role_num);
+	
 	//////////////////////////////////////////
+	PLAYERINFO* findPlayerInfoByNum(uint16_t role_num);
+	uint16_t roleAliveNum();
 	uint16_t curRoleCount();
 	//////////////////////////////////////////
 	//Ñ¡ÔñÄ¿±ê
 	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon);
+	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon, uint16_t *roles, uint16_t role_count);
 	int applyDamage(uint32_t card_id, uint16_t source_num, uint16_t target_num);
 	int applyDamageAll(uint32_t card_id, uint16_t source_num);
 	int applyPlayCard(uint32_t card_id, uint16_t target_num);
-	int applyCardRemove(uint32_t card_id, uint16_t source_num, uint16_t target_num);
+	int applyCardRemove(uint32_t card_id, uint16_t source_num, uint16_t target_num, bool can_judge = true);
 	int applyCardDuel(uint16_t source_num, uint16_t target_num);
 	int applyCardDeals(uint16_t cards_count, CLICARDS * cards);
+	int applyEquipment(uint32_t card_id, uint16_t role_num, uint16_t target_num);
 	//////////////////////////////////////////
 
 	void viewPilesCards();

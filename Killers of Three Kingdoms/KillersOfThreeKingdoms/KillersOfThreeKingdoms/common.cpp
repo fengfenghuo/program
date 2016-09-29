@@ -39,6 +39,33 @@ int strToInt(string source) {
 	return num;
 }
 
+bool arrIsInArray(uint16_t arr, uint16_t* array, uint16_t array_count) {
+	for (uint16_t i = 0; i < array_count; i++) {
+			if (arr == array[i])
+				return true;
+	}
+	return false;
+}
+
+bool arrIsInArray(uint16_t* arr, uint16_t arr_count, uint16_t* array, uint16_t array_count) {
+	for (uint16_t i = 0; i < arr_count; i++) {
+		if (!arrIsInArray(arr[i], array, array_count)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool isLaunchSkill() {
+	string in_str;
+	cin >> in_str;
+
+	if (in_str == "yse" && in_str == "YES" && in_str == "Y" && in_str == "y") {
+		return true;
+	}
+	return false;
+}
+
 std::string UTF8_To_string(const std::string & str)
 {
 	int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
