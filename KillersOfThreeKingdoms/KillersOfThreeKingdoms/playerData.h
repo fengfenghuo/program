@@ -56,6 +56,7 @@ public:
 	bool isCurCardEmpty();                                        //是否有手牌
 	bool isJudgeCardEmpty();                                      //是否有判定牌
 	bool isEquipCardEmpty();                                      //是否有装备牌
+	bool isPlayCard_Sha();                                        //是否出过杀
 	
 	uint16_t damageRange();                                       //可攻击范围
 	uint16_t weaponRange();                                       //武器攻击范围
@@ -72,6 +73,7 @@ public:
 	bool roleSex();
 
 	uint32_t curCardId(uint16_t index);                           //第index手牌的ID
+	CLICARDS *curCardIndex(uint16_t index);
 	int curCardIndex(string name);                                //名字为name牌的位置
 	int curCardIndex(uint32_t id);                                //ID为id牌的位置
 	CLICARDS* judgeCardByIndex(uint16_t index);                   //第index判定牌

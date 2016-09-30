@@ -169,7 +169,7 @@ bool PlayerData::setRoleStatus(uint16_t status, uint16_t role_num, bool isRobot)
 bool PlayerData::setRoleCurState(uint16_t state, bool is_play_sha) {
 	if (state >= GAME_STAGE_END && state <= GAME_STAGE_DISCARDS) {
 		m_playerInfo.cur_state = state;
-		m_playerInfo.cur_state = is_play_sha;
+		m_playerInfo.is_play_sha = is_play_sha;
 	}
 	return false;
 }
@@ -488,6 +488,13 @@ int PlayerData::curCardIndex(string name) {
 	return ERROR_SYSTEM_ERROR;
 }
 
+CLICARDS *PlayerData::curCardIndex(uint16_t index) {
+	if (index >= m_playerInfo.cards_num) {
+		return NULL;
+	}
+	return &m_playerInfo.cur_cards[index];
+}
+
 int PlayerData::curCardIndex(uint32_t id) {
 	for (uint16_t i = 0; i < m_playerInfo.cards_num; i++) {
 		if (id == m_playerInfo.cur_cards[i].id) {
@@ -515,6 +522,10 @@ bool PlayerData::isJudgeCardEmpty() {
 
 bool PlayerData::isEquipCardEmpty() {
 	return m_playerInfo.judgment_num == 0 ? true : false;
+}
+
+bool PlayerData::isPlayCard_Sha() {
+	return m_playerInfo.is_play_sha;
 }
 
 uint16_t PlayerData::cardCurNum() {

@@ -38,7 +38,7 @@ public:
 	//Ñ¡ÔñÄ¿±ê
 	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon);
 	int chooseTarget(uint16_t distance, uint16_t role_num, bool need_weapon, uint16_t *roles, uint16_t role_count);
-	int applyDamage(uint32_t card_id, uint16_t source_num, uint16_t target_num);
+	int applyDamage(uint16_t card_color, uint16_t source_num, uint16_t target_num);
 	int applyDamageAll(uint32_t card_id, uint16_t source_num);
 	int applyPlayCard(uint32_t card_id, uint16_t target_num);
 	int applyCardRemove(uint32_t card_id, uint16_t source_num, uint16_t target_num, bool can_judge = true);
@@ -46,7 +46,8 @@ public:
 	int applyCardDeals(uint16_t cards_count, CLICARDS * cards);
 	int applyEquipment(uint32_t card_id, uint16_t role_num, uint16_t target_num);
 	//////////////////////////////////////////
-
+	CLICARDS * playCardAI(uint16_t role_num);
+	//////////////////////////////////////////
 	void viewPilesCards();
 	void viewPlayersStatus();
 	void viewRoleInfo(ROLESINFO * role);

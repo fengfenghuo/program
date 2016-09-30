@@ -32,20 +32,20 @@ uint16_t setGameRoleNum() {
 
 int main() {
 	while (true) {
-		uint16_t role_num = 0;
+		uint16_t role_count = 0;
 		uint16_t player_num = 0;
 		menu();
-		role_num = setGameRoleNum();
+		role_count = setGameRoleNum();
 
-		if (role_num == 0) {
+		if (role_count == 0) {
 			cout << "结束游戏~ " << endl;
 			return 0;
 		}
 
-		GameData gameData(role_num);
+		GameData gameData(role_count);
 		gameData.shuffleCards();
 
-		player_num = gameData.generateStatus(role_num);
+		player_num = gameData.generateStatus(role_count);
 		if (player_num < 0) {
 			cout << "出错了，生成身份出错啦~" << endl;
 			return ERROR_SYSTEM_ERROR;
@@ -56,7 +56,7 @@ int main() {
 			cout << "你消失啦~，重新开始吧~" << endl;
 			return ERROR_SYSTEM_ERROR;
 		}
-		cout << "你的身份是：" << viewRoleStatus(playerInfo->status) << "位于【" << playerInfo->role_num << "】号位" << endl;
+		cout << "你的身份是：" << viewRoleStatus(playerInfo->status) << "位于【" << player_num << "】号位" << endl;
 		gameData.generateRoles();
 
 		gameData.viewPlayersRole();
