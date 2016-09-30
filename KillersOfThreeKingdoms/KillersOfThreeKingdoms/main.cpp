@@ -63,7 +63,7 @@ int main() {
 		gameData.startingCards();
 		gameData.viewPlayerCards(player_num);
 
-		cout << "游戏开始~" << endl;
+		cout << "游戏开始~" << endl << endl;
 		while (!gameData.endingCondition(player_num)) {
 			for (uint16_t i = 0; i < gameData.curRoleCount(); i++) {
 				gameData.playerStartToPlay(i);

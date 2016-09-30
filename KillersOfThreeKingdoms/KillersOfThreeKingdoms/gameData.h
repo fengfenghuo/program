@@ -47,6 +47,7 @@ public:
 	int applyEquipment(uint32_t card_id, uint16_t role_num, uint16_t target_num);
 	//////////////////////////////////////////
 	CLICARDS * playCardAI(uint16_t role_num);
+	CLICARDS * cardRemoveAI(uint16_t role_num, uint16_t target_num);
 	//////////////////////////////////////////
 	void viewPilesCards();
 	void viewPlayersStatus();
